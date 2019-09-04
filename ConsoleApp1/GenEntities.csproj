@@ -77,6 +77,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityHelper.ttinclude</DependentUpon>
     </Compile>
+    <Compile Include="Generate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Generate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Manager.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

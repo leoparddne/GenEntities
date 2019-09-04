@@ -6,10 +6,10 @@
     bool serviceModel = false;
     bool needRepository=true;
     // 数据库连接
-    var connectionString = @"Server=127.0.0.1;port=3306;database=tianleclass;charset=utf8;uid=root;password=root";
+    var connectionString = @"Server=47.92.80.220;port=3306;database=target;charset=utf8;uid=root;password=,W*QKg)dw8Y#";
  
     // 需要解析的数据库
-    var database = new List<string> { "tianleclass" };
+    var database = new List<string> { "target" };
 	//配置默认的名称空间
 	var nameSpace="TestNameSpace";
 	//实体类名称空间
@@ -114,7 +114,7 @@ namespace <#= RepositoryNameSpace #>
 {
     public class <#= entity.EntityName #>Repository : RepositoryBase<<#= entity.EntityName #>>, I<#= entity.EntityName #>Repository
     {
-        public ClassVirtualChatRepository(<#= dbContextType #> context) : base(context)
+        public <#= entity.EntityName #>Repository(<#= dbContextType #> context) : base(context)
         {
         }
     }
