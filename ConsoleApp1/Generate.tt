@@ -6,10 +6,10 @@
     bool serviceModel = false;
     bool needRepository=true;
     // 数据库连接
-    var connectionString = @"Server=47.92.80.220;port=3306;database=target;charset=utf8;uid=root;password=,W*QKg)dw8Y#";
+    var connectionString = @"Server=47.92.80.220;port=3306;database=tianleclass;charset=utf8;uid=root;password=,W*QKg)dw8Y#";
  
     // 需要解析的数据库
-    var database = new List<string> { "target" };
+    var database = new List<string> { "tianleclass" };
 	//配置默认的名称空间
 	var nameSpace="TestNameSpace";
 	//实体类名称空间
@@ -92,7 +92,7 @@ namespace <#= nameSpace #>
 		if(!needRepository){
 			continue;
 		}
-		manager.StartNewFile("I"+entity.EntityName + "Respository.cs","IRespository");
+		manager.StartNewFile("I"+entity.EntityName + "Repository.cs","IRespository");
 #>
 using System;
 using System.Collections.Generic;
