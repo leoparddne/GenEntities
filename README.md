@@ -1,5 +1,12 @@
 # GenEntities,使用T4模板自动生成需要的数据库实体类、仓储类、仓储接口
 
+主要逻辑在Generate.tt文件中
+
+另外Manager.ttinclude文件中包含了创建文件的操作,使用此方法需要将Generate.tt文件中hostspecific设置为true
+```
+<#@ template debug="false" hostspecific="true" language="C#" #>
+```
+
 ##更新
 1. 添加对仓储模式自动生成的支持,可用通过修改Generate.tt文件中的needRepository改为true生成实体对应的仓储  
 2. 可以配置仓储对应的实体类、仓储接口、仓储类、上下文类的名称空间以及上下文类的配置
