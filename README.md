@@ -1,5 +1,43 @@
-# GenEntities,使用T4模板自动生成需要的数据库实体类、仓储类、仓储接口
+# 使用T4模板自动生成需要的数据库实体类、仓储类、仓储接口
 
+提供两种项目
+1. AutoInfrastructGenerate - 提供基础生成实体(实体基础结构-不读取数据库-可手动扩展读取特定数据库实体类型)、仓储
+2. GenEntities-Mysql - 读取mysql中的表自动生成实体及仓储
+
+### AutoInfrastructGenerate
+1. Entity.tt中提供了主要的逻辑
+2. Manager.ttinclude中提供了文件相关操作
+
+### 基本数据配置
+```
+string baseNamespaceName="MES.Server.Manufacture"; //基础名称空间
+    string entityNamespaceName="Domain.Entity"; //实体名称空间
+    string repositoryNamespaceName="Infrastruct.Repository"; //仓储名称空间
+    string iRepositoryNamespaceName="Domain.IRepository"; //仓储接口名称空间
+    string tableDesc="测试表";
+    string tableName="t_pd_wo_issue_material";
+    string entityFileName="WorkorderIssueMaterial"; //实体基本名称
+    string entityName=entityFileName+"Entity"; //实体文件名称
+    string repositoryName=entityFileName+"Repository"; //仓储名称
+    string iRepositoryName="I"+repositoryName; //仓储基类
+
+    var manager = Manager.Create(Host, GenerationEnvironment);
+
+    bool isBaseRepository=true; //是否生成基础仓储模型
+```
+
+### 文件相关操作
+```
+var manager = Manager.Create(Host, GenerationEnvironment);
+//开始文件写入,后续输出将写入此文件
+manager.StartNewFile(entityName + ".cs","Entities"); //Entities为保存的目录名称
+
+manager.EndBlock(); //结束当前文件写入
+
+manager.Process(true); //解析文件,将生成的数据导入配置的文件中
+```
+
+### GenEntities-Mysql
 主要逻辑在Generate.tt文件中
 
 另外Manager.ttinclude文件中包含了创建文件的操作,使用此方法需要将Generate.tt文件中hostspecific设置为true
