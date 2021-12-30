@@ -16,7 +16,7 @@
     string iServiceNameSpaceName="Application.IService"; //服务接口名称空间
     string tableDesc="测试表";
     string tableName="t_pd_wo_issue_material";
-    string entityFileName="WorkorderIssueMaterial"; //实体基本名称
+    string entityFileName="ChangeSlot"; //实体基本名称
     string entityName=entityFileName+"Entity"; //实体文件名称
     string repositoryName=entityFileName+"Repository"; //仓储名称
     string iRepositoryName="I"+repositoryName; //仓储基类
@@ -56,9 +56,9 @@ using SqlSugar;
 
 namespace <#= baseNamespaceName #>.<#= repositoryNamespaceName #>
 {
- /// <summary>
- /// <#= tableDesc #>
- /// </summary>
+     /// <summary>
+     /// <#= tableDesc #>
+     /// </summary>
  <#
     if(isBaseRepository){
  #>
@@ -71,7 +71,6 @@ namespace <#= baseNamespaceName #>.<#= repositoryNamespaceName #>
  <#
      }
  #>
- public class <#= repositoryName #> : BaseRepositoryExtension, <#= iRepositoryName #>
     {
         public <#= repositoryName #> (IUnitOfWork unitOfWork) : base(unitOfWork)
         {
