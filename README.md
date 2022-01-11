@@ -1,12 +1,19 @@
 # 使用T4模板自动生成需要的数据库实体类、仓储类、仓储接口
 
-提供两种项目
-1. AutoInfrastructGenerate - 提供基础生成实体(实体基础结构-不读取数据库-可手动扩展读取特定数据库实体类型)、仓储
+提供两个项目
+1. AutoInfrastructGenerate - 提供基础生成实体(实体基础结构-不读取数据库-可手动扩展读取特定数据库实体类型)、仓储 -T4模板
 2. GenEntities-Mysql - 读取mysql中的表自动生成实体及仓储
+3. OracleGenerate - 读取oracle中的表自动生成实体
 
 ### AutoInfrastructGenerate
 1. Entity.tt中提供了主要的逻辑
 2. Manager.ttinclude中提供了文件相关操作
+
+### OracleGenerate
+配置文件 - 数据库连接字符串
+![image](https://user-images.githubusercontent.com/13193677/148872674-41a57622-7744-48b6-b5c5-981fce7340ea.png)
+![image](https://user-images.githubusercontent.com/13193677/148872787-b1445c99-daf6-4328-8fc3-bc7a8d2245d1.png)
+
 
 ### 基本数据配置
 ```
