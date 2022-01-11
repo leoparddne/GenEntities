@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "itIRMlDM4D0mpZX7rpBu60gfgFpR438z0RXhjGxD8F5ZhJLHsSekeWUIpTprZ+k4MDf+4LlHs3vh1K3/9JlESw==",
+  "dgSpecHash": "+DlPZpwrFQ4EctLcv64yvVmvso+01AhmcUHzbSGHs2cplgIhDpt1uTvPDwBqDuFYJ+1xrX4vHr8yeeScuzo4CA==",
   "success": true,
-  "projectFilePath": "D:\\work\\code\\test\\GenEntities\\GenEntity-Base\\AutoInfrastructGenerate.csproj",
+  "projectFilePath": "D:\\tool\\GenEntities\\GenEntity-Base\\AutoInfrastructGenerate.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
