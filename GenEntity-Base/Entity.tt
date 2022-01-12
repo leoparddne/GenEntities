@@ -16,9 +16,9 @@
     string iServiceNameSpaceName="Application.IService"; //服务接口名称空间
 
     bool isBaseRepository=true; //是否生成基础仓储模型
-    string tableDesc="";
-    string tableName="t_pd_wo_msl"; //数据库表名称
-    string entityFileName="WoMSL"; //实体基本名称
+    string tableDesc="工装信息表";
+    string tableName="T_TOOLING_FIXTURE"; //数据库表名称
+    string entityFileName="ToolingFixture"; //实体基本名称
 
 
     string entityName=entityFileName+"Entity"; //实体文件名称
@@ -104,11 +104,18 @@ namespace <#= baseNamespaceName #>.<#= iRepositoryNamespaceName #>
 using MES.Server.Infrastruct.ServiceExtension.Authentication;
 using MES.Server.Manufacture.Application.IService.Material;
 using MES.Server.Manufacture.Domain.IRepository.SMT;
+using <#= baseNamespaceName #>.<#= iRepositoryNamespaceName #>;
 
 namespace <#= baseNamespaceName #>.<#= serviceNamespaceName #>
 {
     public class <#= serviceName #> : <#= iServiceName #>
     {
+        readonly <#= iRepositoryName #> <#= repositoryName #>;
+
+        public ToolingFixtureService(<#= iRepositoryName #> <#= repositoryName #>)
+        {
+            this.<#= repositoryName #> = <#= repositoryName #>;
+        }
     }
 }
 
