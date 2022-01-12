@@ -15,9 +15,13 @@ namespace OracleEx.Ex
             {
                 type = "string";
             }
-            if (typeStr.StartsWith("NUMBER"))
+            if (typeStr.Trim() == "INT")
             {
                 type = "int";
+            }
+            if (typeStr.StartsWith("NUMBER"))
+            {
+                type = "double";
             }
             if (typeStr.StartsWith("CHAR"))
             {
