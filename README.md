@@ -12,7 +12,7 @@
 ### OracleGenerate
 配置文件 - 数据库连接字符串
 ![image](https://user-images.githubusercontent.com/13193677/148872674-41a57622-7744-48b6-b5c5-981fce7340ea.png)
-![image](https://user-images.githubusercontent.com/13193677/148872787-b1445c99-daf6-4328-8fc3-bc7a8d2245d1.png)
+![image](https://user-images.githubusercontent.com/13193677/149716899-fcac5a1b-d499-4e74-b7de-b25885cc96f3.png)
 ### 原理
 ```
 -- 获取用户创建的表
