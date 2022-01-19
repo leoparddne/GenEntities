@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace OracleGenerate
@@ -37,26 +38,48 @@ namespace OracleGenerate
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            ClearMsg();
+
+            string table = txtTableName.Text.ToUpper(), mask = txtMask.Text, path = txtSavePath.Text;
+            this.Dispatcher.Invoke(async () =>
+            {
+                await Task.Run(() =>
+                {
+                    Generate(table, mask, path);
+
+                });
+
+                txtMsg.Content = "生成成功";
+            }, System.Windows.Threading.DispatcherPriority.Background);
+        }
+        private void ClearMsg()
+        {
+            txtMsg.Content = "";
+        }
+
+        private void Generate(string tableName, string tableMask, string path)
+        {
             List<string> searchTables = new List<string>();
-            if (string.IsNullOrWhiteSpace(txtTableName.Text))
+            if (string.IsNullOrWhiteSpace(tableName))
             {
                 MessageBox.Show("请输入要生成的表名");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtSavePath.Text))
+            if (string.IsNullOrWhiteSpace(path))
             {
                 return;
             }
-            var tableName=txtTableName.Text.ToUpper();
+
+            tableName = tableName.ToUpper();
 
             string nameSpace = "baseNamespaceName";
             //string tableDesc = "";
             //string tableName =  "t_pd_wo_msl"; //数据库表名称
-            string entityFileName = GenName(tableName, txtMask.Text);//实体基本名称
+            string entityFileName = GenName(tableName, tableMask);//实体基本名称
             string entityName = entityFileName + "Entity"; //实体文件名称
             //string saveFile = $@"D:\{entityName}.cs";
-            string saveFile = $@"{txtSavePath.Text + entityName}.cs";
+            string saveFile = $@"{path + entityName}.cs";
 
             //TODO 后续扩展成显示所有表后勾选要生成的表
             searchTables.Add(tableName);

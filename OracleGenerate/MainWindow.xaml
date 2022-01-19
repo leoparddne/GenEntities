@@ -26,6 +26,7 @@
                 <TextBox  Name="txtSavePath" Text="D:\"  Grid.Row="2" Grid.Column="2"/>
             </Grid>
             <Button Content="生成" Height="50" Click="Button_Click"/>
+            <Label Name="txtMsg" Foreground="Red"/>
         </StackPanel>
     </Grid>
 </Window>
