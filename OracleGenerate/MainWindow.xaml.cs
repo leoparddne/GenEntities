@@ -48,17 +48,18 @@ namespace OracleGenerate
             {
                 return;
             }
+            var tableName=txtTableName.Text.ToUpper();
 
             string nameSpace = "baseNamespaceName";
             //string tableDesc = "";
             //string tableName =  "t_pd_wo_msl"; //数据库表名称
-            string entityFileName = GenName(txtTableName.Text, txtMask.Text);//实体基本名称
+            string entityFileName = GenName(tableName, txtMask.Text);//实体基本名称
             string entityName = entityFileName + "Entity"; //实体文件名称
             //string saveFile = $@"D:\{entityName}.cs";
             string saveFile = $@"{txtSavePath.Text + entityName}.cs";
 
             //TODO 后续扩展成显示所有表后勾选要生成的表
-            searchTables.Add(txtTableName.Text);
+            searchTables.Add(tableName);
 
             //List<OracleEx.Model.UserTables> tables = context.UserTables.ToList();
             List<OracleEx.Model.UserTables> tables = context.UserTables.Where(f => searchTables.Contains(f.TableName)).ToList();
@@ -95,6 +96,7 @@ namespace OracleGenerate
 
                 var entityStartBlock = $@"using MES.Server.Domain.Entity;
                 using SqlSugar;
+using System;
 
                 namespace  {nameSpace}
                 {{
@@ -232,7 +234,7 @@ namespace OracleGenerate
                 resultStr.AppendLine("/// " + commnet);
                 resultStr.AppendLine("/// </summary>");
 
-                resultStr.Append($"[SugarColumn(  {(primaryKey.Trim() == field.ColumnName.Trim() ? "IsPrimaryKey = true," : "")} ColumnDescription = \"");
+                resultStr.Append($"[SugarColumn(  {((primaryKey?.Trim() ?? "") == field.ColumnName.Trim() ? "IsPrimaryKey = true," : "")} ColumnDescription = \"");
                 resultStr.Append(commnet);
                 resultStr.Append("\",  ColumnName = \"");
                 resultStr.Append(name.ToLower());
