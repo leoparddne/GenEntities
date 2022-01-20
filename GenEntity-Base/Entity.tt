@@ -8,18 +8,18 @@
 <#@ include file="Manager.ttinclude" #>
 
 <#
-    string baseNamespaceName="MES.Server.System"; //基础名称空间
+    string baseNamespaceName="MES.Server.ManufactureData"; //基础名称空间
     string entityNamespaceName="Domain.Entity"; //实体名称空间
     string repositoryNamespaceName="Infrastruct.Repository"; //仓储名称空间
     string iRepositoryNamespaceName="Domain.IRepository"; //仓储接口名称空间
     string serviceNamespaceName="Application.Service"; //服务名称空间
     string iServiceNameSpaceName="Application.IService"; //服务接口名称空间
 
-    bool isBaseRepository=true; //是否生成基础仓储模型
+    bool isBaseRepository=false; //是否生成基础仓储模型
 
     string tableDesc="";
-    string tableName="T_PD_TERMINAL_MACHINE"; //数据库表名称
-    string entityFileName="MachineCheckNoSubItem"; //实体基本名称
+    string tableName="Test"; //数据库表名称
+    string entityFileName="Test"; //实体基本名称
 
 
     string entityName=entityFileName+"Entity"; //实体文件名称
@@ -95,7 +95,18 @@ namespace <#= baseNamespaceName #>.<#= iRepositoryNamespaceName #>
      /// <summary>
      /// <#= tableDesc #>
      /// </summary>
+     <#
+    if(isBaseRepository){
+     #>
     public interface <#= iRepositoryName #>: IBaseRepository<<#= entityName #>>
+    <#
+     }
+    else{
+     #>
+    public interface <#= iRepositoryName #>
+    <#
+     }
+     #>
     {
     }
 }
