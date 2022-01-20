@@ -103,7 +103,7 @@ namespace <#= baseNamespaceName #>.<#= iRepositoryNamespaceName #>
      }
     else{
      #>
-    public interface <#= iRepositoryName #>
+    public interface <#= iRepositoryName #>: IBaseRepositoryExtension
     <#
      }
      #>
