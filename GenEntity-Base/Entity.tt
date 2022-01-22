@@ -15,9 +15,9 @@
     string serviceNamespaceName="Application.Service"; //服务名称空间
     string iServiceNameSpaceName="Application.IService"; //服务接口名称空间
 
-    bool isBaseRepository=false; //是否生成基础仓储模型
+    bool isBaseRepository=true; //是否生成基础仓储模型
 
-    string tableDesc="";
+    string tableDesc="测试";
     string tableName="Test"; //数据库表名称
     string entityFileName="Test"; //实体基本名称
 
@@ -122,7 +122,7 @@ using <#= baseNamespaceName #>.<#= iRepositoryNamespaceName #>;
 
 namespace <#= baseNamespaceName #>.<#= serviceNamespaceName #>
 {
-    public class <#= serviceName #> : <#= iServiceName #>
+    public class <#= serviceName #> : BaseService,<#= iServiceName #>
     {
         readonly <#= iRepositoryName #> <#= repositoryName #>;
 
@@ -140,7 +140,7 @@ namespace <#= baseNamespaceName #>.<#= serviceNamespaceName #>
 
 namespace <#= baseNamespaceName #>.<#= iServiceNameSpaceName #>
 {
-    public interface <#= iServiceName #>
+    public interface <#= iServiceName #>:IBaseService
     {
     }
 }
