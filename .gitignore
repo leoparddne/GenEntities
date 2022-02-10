@@ -1,6 +1,7 @@
 # Visual Studio 
 
 # User-specific files
+.vs/
 *.suo
 *.user
 *.userosscache
