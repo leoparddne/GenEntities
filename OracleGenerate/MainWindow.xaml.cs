@@ -129,7 +129,7 @@ using System;
                     /// {tableDesc}
                     /// </summary>
                     [SugarTable(""{table.TableName}"")]
-                    public class {entityName} : CommonEntity
+                    public class {entityName} : CommonEntity, IEnabled, ICommonID
                     {{";
 
                 string? entityEndBlock = @"
