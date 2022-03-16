@@ -26,6 +26,7 @@
                 <TextBox  Name="txtSavePath" Text="D:\"  Grid.Row="2" Grid.Column="2"/>
             </Grid>
             <Button Content="生成" Height="50" Click="Button_Click"/>
+            <Button Content="生成所有表" Height="50" Name="btnAll" Click="btnAll_Click"/>
             <Button Content="生成InDto" Height="50" Name="btnInDto" Click="btnInDto_Click"/>
             <Button Content="生成架构" Height="50" Name="btnGenInfrastruct" Click="btnGenInfrastruct_Click"/>
             <Label Name="txtMsg" Foreground="Red"/>

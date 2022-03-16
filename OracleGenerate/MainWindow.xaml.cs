@@ -1,5 +1,5 @@
 ﻿using Model;
-using OracleEx;
+using OracleEx.DBContext;
 using OracleEx.Ex;
 using OracleEx.Model;
 using System.Collections.Generic;
@@ -86,7 +86,7 @@ namespace OracleGenerate
             //TODO 后续扩展成显示所有表后勾选要生成的表
             searchTables.Add(tableName);
 
-            //List<OracleEx.Model.UserTables> tables = context.UserTables.ToList();
+
             List<OracleEx.Model.UserTables> tables = context.UserTables.Where(f => searchTables.Contains(f.TableName)).ToList();
 
             //List<OracleEx.Model.UserTables>? tmp = tables.Where(f => f.TableName == "T_SYS_USER").ToList();
@@ -416,6 +416,27 @@ using System;
             command.Parameters.Add("ParameterName", model);
 
             command.Generate();
+        }
+
+        private void btnAll_Click(object sender, RoutedEventArgs e)
+        {
+            var path = @"D:\allTables.txt";
+            Dictionary<string, string> dir = new();
+            List<string> allTables = context.UserTables.Select(f => f.TableName).ToList();
+            StringBuilder stringBuilder = new StringBuilder();
+            var tableComment = context.UserTabComments.Where(f => allTables.Contains(f.TableName));
+
+            if (tableComment != null)
+            {
+                foreach (var item in tableComment)
+                {
+                    //dir.Add(tableComment.TableName, tableComment.Comments);
+                    stringBuilder.AppendLine(@$"{item.TableName} {item.Comments}");
+                }
+            }
+            File.WriteAllText(path, stringBuilder.ToString());
+
+            txtMsg.Content = "生成成功";
         }
     }
 }

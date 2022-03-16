@@ -4,7 +4,7 @@ using OracleEx.Model;
 using System;
 using System.Diagnostics;
 
-namespace OracleEx
+namespace OracleEx.DBContext
 {
     public class EFLogger : ILogger
     {

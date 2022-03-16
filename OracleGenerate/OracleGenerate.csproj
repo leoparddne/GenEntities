@@ -25,6 +25,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Infrastruct.cs</LastGenOutput>
     </None>
+    <None Update="T4\Infrastruct _CommonService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="T4\Infrastruct_EnabledService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Infrastruct_EnabledService.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +43,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Infrastruct.tt</DependentUpon>
+    </Compile>
+    <Compile Update="T4\Infrastruct_EnabledService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Infrastruct_EnabledService.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -16,9 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OracleEx", "OracleEx\Oracle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OracleGenerate", "OracleGenerate\OracleGenerate.csproj", "{F59C21B8-D359-4A0E-B0AE-FBEAC16D4C3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T4Ext", "T4Ext\T4Ext.csproj", "{EE7248C4-7A37-4105-883F-4B500759CCB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "T4Ext", "T4Ext\T4Ext.csproj", "{EE7248C4-7A37-4105-883F-4B500759CCB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{F5224AEC-848F-48D3-8E0F-C58A6929FB11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{F5224AEC-848F-48D3-8E0F-C58A6929FB11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
