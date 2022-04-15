@@ -26,6 +26,7 @@
 后续将调整为配置--暂未处理
 
 ### 原理
+#### oracle
 ```
 -- 获取用户创建的表
 select table_name from user_tables 
@@ -47,6 +48,48 @@ where con.constraint_name = col.constraint_name
 and con.constraint_type='P' 
 and col.table_name = 'T_USER'
 ```
+
+#### postgre
+获取数据库中所有view名 视图
+```
+SELECT * FROM pg_views  
+WHERE schemaname ='public'
+```
+
+获取数据库中所有table名 表
+```
+SELECT * FROM pg_tables  
+WHERE tablename NOT LIKE 'pg%' AND tablename NOT LIKE 'sql_%'
+ORDER BY tablename;
+```
+
+获取某个表tablename 所有字段名称 ， 类型，备注,是否为空
+```
+SELECT 
+        col_description(a.attrelid,a.attnum) as comment,
+		pg_type.typname as typename,
+		a.attname as name, 
+		a.attnotnull as notnull
+FROM 
+    pg_class as c,pg_attribute as a 
+inner join pg_type on pg_type.oid = a.atttypid
+where 
+    c.relname = 'xxxx' and a.attrelid = c.oid and a.attnum>0
+```
+
+获取某个表tablename 的主键信息
+```
+select 
+        pg_attribute.attname as colname,
+		pg_type.typname as typename,
+		pg_constraint.conname as pk_name 
+from pg_constraint  
+inner join pg_class on pg_constraint.conrelid = pg_class.oid 
+inner join pg_attribute on pg_attribute.attrelid = pg_class.oid and  pg_attribute.attnum = pg_constraint.conkey[1]
+inner join pg_type on pg_type.oid = pg_attribute.atttypid
+where pg_class.relname = 'bd_basic_data_type' and pg_constraint.contype='p'
+```
+
 
 
 ### 基本数据配置
