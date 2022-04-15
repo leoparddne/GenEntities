@@ -53,7 +53,8 @@ namespace OracleGenerate
             }
 
 
-            var dbType = DBTypeEnum.Postgre;
+            var dbType = DBTypeEnum.Oracle;
+            //var dbType = DBTypeEnum.Postgre;
             switch (dbType)
             {
                 case DBTypeEnum.Oracle:

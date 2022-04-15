@@ -420,7 +420,7 @@ using System;
 
         private void btnAll_Click(object sender, RoutedEventArgs e)
         {
-            var d = context.PGTables.ToList();
+           // var d = context.PGTables.ToList();
 
             var path = @"D:\allTables.txt";
             Dictionary<string, string> dir = new();
