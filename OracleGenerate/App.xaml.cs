@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OracleEx.DBContext;
+using OracleEx.Enums;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,7 +22,7 @@ namespace OracleGenerate
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var service=new ServiceCollection();
+            var service = new ServiceCollection();
 
             ConfigurationService(service);
 
@@ -41,18 +42,31 @@ namespace OracleGenerate
             IConfiguration configuration;
             var builder = new ConfigurationBuilder();
 
-            builder.AddJsonFile(System.Environment.CurrentDirectory+"\\AppSetting.json", false, true);
+            builder.AddJsonFile(System.Environment.CurrentDirectory + "\\AppSetting.json", false, true);
             configuration = builder.Build();
 
-            var value=configuration.GetSection("Oracle");
-            if(value == null)
+            var value = configuration.GetSection("Oracle");
+            if (value == null)
             {
                 MessageBox.Show("请配置数据库连接");
                 Application.Current.Shutdown();
             }
 
 
-            service.AddDbContext<SchemeContext>(option => { option.UseOracle(value.Value, f => f.UseOracleSQLCompatibility("12")); });
+            var dbType = DBTypeEnum.Postgre;
+            switch (dbType)
+            {
+                case DBTypeEnum.Oracle:
+                    service.AddDbContext<SchemeContext>(option => { option.UseOracle(value.Value, f => f.UseOracleSQLCompatibility("12")); });
+                    break;
+                case DBTypeEnum.Postgre:
+                    service.AddDbContext<SchemeContext>(option => { option.UseNpgsql(value.Value); });
+
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

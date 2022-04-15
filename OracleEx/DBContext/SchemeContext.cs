@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OracleEx.Model;
+using OracleEx.Model.PGSQL;
 using System;
 using System.Diagnostics;
 
@@ -112,6 +113,13 @@ namespace OracleEx.DBContext
         /// 
         /// </summary>
         public DbSet<UserConsColumns> UserConsColumns { get; set; }
+
+
+
+        #region PGSQL
+        public DbSet<PGTables> PGTables { get; set; }
+
+        #endregion
 
     }
 }
