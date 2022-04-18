@@ -63,6 +63,12 @@ WHERE tablename NOT LIKE 'pg%' AND tablename NOT LIKE 'sql_%'
 ORDER BY tablename;
 ```
 
+获取表注释
+```
+select relname as tabname,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c
+where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname
+```
+
 获取某个表tablename 所有字段名称 ， 类型，备注,是否为空
 ```
 SELECT 
