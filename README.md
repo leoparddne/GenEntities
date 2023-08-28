@@ -1,13 +1,22 @@
 # 使用T4模板自动生成需要的数据库实体类、仓储类、仓储接口
 
-提供的项目
-1. AutoInfrastructGenerate - 提供基础生成实体(实体基础结构-不读取数据库-可手动扩展读取特定数据库实体类型)、仓储 -T4模板
+提供的功能彼此独立,目前提供以下几个工具,后续将整合为整体工具
+1. GenEntities - 提供基础生成实体(实体基础结构-不读取数据库-可手动扩展读取特定数据库实体类型)、仓储 -T4模板 (使用T4模板的基础工具,根据模板自动读取数据库中的字段并解析为基础的仓储结构代码)
 2. GenEntities-Mysql - 读取mysql中的表自动生成实体及仓储
 3. OracleGenerate - 读取oracle中的表自动生成实体 -读取oracle基表
 
-### AutoInfrastructGenerate
+### GenEntities
 1. Entity.tt中提供了主要的逻辑
 2. Manager.ttinclude中提供了文件相关操作
+3. 主要逻辑都在模板中,使用过程需要调整模板中tableName字段及其他相关字段,随后在vs中保存以触发生成逻辑
+
+### GenEntities-Mysql
+对GenEntities进行mysql适配后的版本,使用方法与GenEntities一致
+
+### OracleGenerate
+1. 在GenEntities基础上适配oracle后开发的windows gui工具
+2. 将数据库连接字符串调整到配置文件中
+
 
 ### QA 
 如果遇到类型“DTE”同时存在于“EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a”和“Microsoft.VisualStudio.Interop, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a”中	
@@ -15,7 +24,8 @@
 
 
 ### OracleGenerate
-配置文件 - 数据库连接字符串
+配置文件 - 数据库连接字符串  
+
 ![image](https://user-images.githubusercontent.com/13193677/148872674-41a57622-7744-48b6-b5c5-981fce7340ea.png)
 ![image](https://user-images.githubusercontent.com/13193677/149716899-fcac5a1b-d499-4e74-b7de-b25885cc96f3.png)
 ![image](Imgimage.png)
