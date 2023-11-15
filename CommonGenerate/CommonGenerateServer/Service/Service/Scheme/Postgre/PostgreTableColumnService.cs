@@ -1,7 +1,7 @@
-﻿using CodeDesigner.Application.IService.Scheme.Postgre;
-using CodeDesigner.Resource.Dto.Out;
-using MES.Server.Infrastruct.ServiceExtension;
-using MES.Server.Infrastruct.UnitOfWork;
+﻿using Domain.DTO;
+using Infrastruct.Base.Service;
+using Infrastruct.Base.UOF;
+using Service.IService.Scheme.Postgre;
 using System.Collections.Generic;
 
 namespace Service.Service.Scheme.Postgre

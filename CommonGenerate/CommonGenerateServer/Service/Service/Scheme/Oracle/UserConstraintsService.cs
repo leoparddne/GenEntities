@@ -1,4 +1,6 @@
 using Domain.DBScheme.Oracle;
+using Domain.IRepository.DBScheme.Oracle;
+using Infrastruct.Base.UOF;
 using Service.IService.Scheme.Oracle;
 using SqlSugar;
 using System.Collections.Generic;

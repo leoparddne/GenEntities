@@ -5,6 +5,7 @@ using Server.WebAPI.Model.Constants;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Toolkit.Exceptions;
 
 namespace Server.WebAPI.Middleware
 {
@@ -59,14 +60,14 @@ namespace Server.WebAPI.Middleware
                 //        Message = "Unauthorized"
                 //    };
                 //    break;
-                //case HttpCodeException httpCodeException:
-                //    result = new APIResponseModel<object>
-                //    {
-                //        Code = ResponseEnum.Fail.GetHashCode(),
-                //        Message = httpCodeException.Message
-                //    };
-                //    httpContext.Response.StatusCode = httpCodeException.HttpCode;
-                //    break;
+                case HttpCodeException httpCodeException:
+                    result = new APIResponseModel<object>
+                    {
+                        Code = ResponseEnum.Fail.GetHashCode(),
+                        Message = httpCodeException.Message
+                    };
+                    httpContext.Response.StatusCode = httpCodeException.HttpCode;
+                    break;
                 default:
                     result = new APIResponseModel<object>
                     {

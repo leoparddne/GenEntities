@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Folder Include="Entity\" />
+    <Folder Include="Repository\DBScheme\Oracle\" />
+    <Folder Include="Repository\DBScheme\Postgre\" />
   </ItemGroup>
 
   <ItemGroup>

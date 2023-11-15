@@ -1,8 +1,8 @@
-using CodeDesigner.Application.IService.Scheme.Postgre;
-using CodeDesigner.Domain.Entity.DBScheme.Oracle;
-using CodeDesigner.Domain.IRepository.DBScheme.Postgre;
-using MES.Server.Infrastruct.ServiceExtension;
-using MES.Server.Infrastruct.UnitOfWork;
+using Domain.DBScheme.Oracle;
+using Domain.IRepository.DBScheme.Postgre;
+using Infrastruct.Base.Service;
+using Infrastruct.Base.UOF;
+using Service.IService.Scheme.Postgre;
 using System.Collections.Generic;
 using System.Linq;
 

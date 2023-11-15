@@ -1,3 +1,5 @@
+using Domain.IRepository.DBScheme.Oracle;
+using Infrastruct.Base.UOF;
 using Service.IService.Scheme.Oracle;
 
 namespace Service.Service.Scheme.Oracle
