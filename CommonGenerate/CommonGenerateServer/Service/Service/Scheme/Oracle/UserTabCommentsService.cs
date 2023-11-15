@@ -8,14 +8,10 @@ namespace Service.Service.Scheme.Oracle
 {
     public class UserTabCommentsService : IUserTabCommentsService
     {
-        private readonly IUnitOfWork unitOfWork;
-
         private readonly IUserTabCommentsRepository userTabCommentsRepository;
 
-        public UserTabCommentsService(IUnitOfWork unitOfWork, IUserTabCommentsRepository UserTabCommentsRepository)
+        public UserTabCommentsService( IUserTabCommentsRepository UserTabCommentsRepository)
         {
-            this.unitOfWork = unitOfWork;
-
             userTabCommentsRepository = UserTabCommentsRepository;
         }
 

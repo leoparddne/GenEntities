@@ -72,6 +72,7 @@ namespace Server.WebAPI
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<IOCNameModuleRegister>();
+            builder.RegisterModule<IOCProperityModuleRegister>();
         }
     }
 }
