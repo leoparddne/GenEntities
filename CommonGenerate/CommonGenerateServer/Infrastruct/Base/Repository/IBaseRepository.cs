@@ -976,27 +976,5 @@ namespace Infrastruct.Base.Repository
         TResult GetMax<TResult>(Expression<Func<T, TResult>> field, Expression<Func<T, bool>> condition);
 
         List<T> ToList(ISugarQueryable<T> queryable, Expression<Func<T, object>> orderByCondition = null, OrderByType orderByType = OrderByType.Asc);
-
-        ISugarQueryable<T> QueryListByCondition(ISugarQueryable<T> queryable, string where, object parameters);
-
-        //
-        // 摘要:
-        //     保存历史表
-        //
-        // 参数:
-        //   obj:
-        //
-        //   ignoreDesc:
-        //     是否需要使用automap映射数据到非同名字段
-        void SaveHistory(T obj, bool ignoreDesc = false);
-
-        ISugarQueryable<TResult> QueryMuchGroupByToQueryable<T1, T2, T3, TResult>(Expression<Func<T1, T2, T3, TResult>> selectFields, Expression<Func<T1, T2, T3, object[]>> joinCondition, Expression<Func<T1, T2, T3, bool>> whereCondition, Expression<Func<T1, T2, T3, object>> groupCondition, Expression<Func<T1, T2, T3, object>> orderByCondition, OrderByType orderByType = OrderByType.Asc);
-
-
-        TResult GetMin<TResult>(Expression<Func<T, TResult>> field, Expression<Func<T, bool>> condition);
-
-        ISugarQueryable<T> QueryableListByCondition(Expression<Func<T, bool>> whereCondition, Expression<Func<T, object>> orderByCondition = null, OrderByType orderByType = OrderByType.Asc);
-
-        string GetTableName();
     }
 }

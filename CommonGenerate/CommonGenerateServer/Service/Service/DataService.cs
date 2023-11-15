@@ -1,20 +1,18 @@
 ﻿using Domain.DBScheme.Oracle;
 using Domain.DTO;
+using Infrastruct.Config;
+using Infrastruct.Ex;
+using Service.IService;
 using Service.IService.Scheme.Oracle;
 using Service.IService.Scheme.Postgre;
-using System;
+using SqlSugar;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infrastruct.Ex;
-using Infrastruct.Config;
 using Toolkit.Helper;
-using SqlSugar;
 
 namespace Service.Service
 {
-    public class DataService
+    public class DataService : IDataService
     {
         IUserTabCommentsService userTabCommentsService;
         IPostgreTableService postgreTableService;
