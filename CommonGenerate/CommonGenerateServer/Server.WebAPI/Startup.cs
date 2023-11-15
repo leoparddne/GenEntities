@@ -1,3 +1,5 @@
+using Autofac;
+using Infrastruct.Ex;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Server.WebAPI.AutofacIOC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +28,19 @@ namespace Server.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddControllers().AddNewtonsoftJson(delegate (MvcNewtonsoftJsonOptions n)
+            //{
+            //    n.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+            //    n.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            //});
+
+
+            services.AddSqlSugarMuti(
+               log => { System.Console.WriteLine(log); },
+               log => { System.Console.WriteLine(log); });
+
+            //services.AddScoped<>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -51,6 +67,11 @@ namespace Server.WebAPI
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<IOCNameModuleRegister>();
         }
     }
 }
