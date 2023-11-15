@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Server.WebAPI.AutofacIOC;
+using Server.WebAPI.Ex;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace Server.WebAPI
                log => { System.Console.WriteLine(log); });
 
             //services.AddScoped<>();
+
+            services.AddCustomSwaggerHeader();
 
 
             services.AddControllers();
