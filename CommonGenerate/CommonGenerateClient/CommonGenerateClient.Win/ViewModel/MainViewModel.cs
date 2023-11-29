@@ -608,7 +608,7 @@ namespace CommonGenerateClient.Win.ViewModel
 
             host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "CommonGenerateClient.Resource.dll");
 
-            host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "netstandard.dll");
+            //host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "netstandard.dll");
 
 
             host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "Utility.dll");
@@ -616,7 +616,7 @@ namespace CommonGenerateClient.Win.ViewModel
             host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "Newtonsoft.Json.dll");
 
 
-            host.StandardAssemblyReferences.Add("System.Core.dll");
+            //host.StandardAssemblyReferences.Add("System.Core.dll");
             host.StandardImports.Add("CommonGenerateClient.Win.Models");
 
             string output = engine.ProcessTemplate(input, host);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonGenerateClient.Win.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace CommonGenerateClient.Win
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainViewModel model = new MainViewModel();
+
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = model;
+
         }
     }
 }
