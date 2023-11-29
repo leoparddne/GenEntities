@@ -1,0 +1,647 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ output extension=".cs" #>
+<#@ include file="Manager.ttinclude" #>
+<#@ assembly name="Newtonsoft.Json.dll" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ assembly name="CommonGenerateClient.Resource.dll" #>
+<#@ assembly name="Utility.dll" #>
+<#@ import namespace="CommonGenerateClient.Resource.Models.WebAPI" #>
+<#@ import namespace="Utility.DB" #>
+<#@ import namespace="Utility.Common" #>
+<#@ assembly name="netstandard" #>
+<#
+    //System.Diagnostics.Debugger.Launch();
+
+
+    string modelConfigStr=Host.ResolveParameterValue(null, null, "ParameterName");
+    //modelConfigStr=System.Web.HttpUtility.UrlDecode(modelConfigStr);
+
+
+    modelConfigStr=modelConfigStr.Replace(@"\\",@"\").Replace("\"","");
+
+    var pathByte=Convert.FromBase64String(modelConfigStr);
+    modelConfigStr=System.Text.Encoding.UTF8.GetString(pathByte);
+
+    string json= File.ReadAllText(modelConfigStr);
+
+    InfrastructModel dataConfig=JsonConvert.DeserializeObject<InfrastructModel>(json);
+    GenerateEx ex=new GenerateEx(dataConfig.Config.DBType);
+    var entityFieldStr = ex.GenerateTable( dataConfig.Config.Columns, true, false);
+    var dtoFieldStr = ex.GenerateTable( dataConfig.Config.Columns, false, false,true);
+    var dtoFieldWithoutPrimaryKeyStr = ex.GenerateTable( dataConfig.Config.Columns, false, false,true,true);
+
+    string baseNamespaceName="MES.Server."+dataConfig.Config.BaseNamespaceName; //基础名称空间
+    
+
+    string entityNamespace= baseNamespaceName+".Domain.Entity"; //实体名称空间
+    string repositoryNamespaceName = baseNamespaceName+".Infrastruct.Repository"; //仓储名称空间
+    string iRepositoryNamespaceName = baseNamespaceName+".Domain.IRepository"; //仓储接口名称空间
+    string serviceNamespaceName = baseNamespaceName+".Application.Service"; //服务名称空间
+    string iServiceNameSpaceName = baseNamespaceName+".Application.IService"; //服务接口名称空间
+    string controllerNameSpaceName = baseNamespaceName+".Controllers";//控制器名称空间
+    string dtoInNameSpaceName = baseNamespaceName+".Domain.Dto.InDto";//dto名称空间
+    string dtoOutNameSpaceName = baseNamespaceName+".Domain.Dto.OutDto";//dto名称空间
+
+
+    bool isBaseRepository=true; //是否生成基础仓储模型
+
+    string tableDesc= dataConfig.Config.TableDesc??"";//数据库注释
+    string tableName= dataConfig.Config.TableName;//数据库表名称
+    string entityFileName=dataConfig.Config.EntityName; //实体基本名称
+
+
+    string entityName=entityFileName+"Entity"; //实体文件名称
+    string repositoryName=entityFileName+"Repository"; //仓储名称
+    string iRepositoryName="I"+repositoryName; //仓储基类
+    string serviceName= entityFileName+"Service"; //服务名称
+    string serviceParameter=Char.ToLower(serviceName[0])+ serviceName.Substring(1);//service参数名称
+
+
+    string iServiceName="I"+serviceName; //服务接口名称
+    string controllerName= entityFileName+"Controller";//控制器名称
+    string inDtoName= entityFileName + "InDto";
+    string searchInDtoName=entityFileName+"SearchInDto"; //动态查询
+    string searchOutDtoName=entityFileName+"SearchOutDto"; //动态查询
+    string createInDtoName=entityFileName+"CreateInDto"; //创建(不包含主键字段)
+
+    string fileTitle=@$"
+// *
+// * 此代码由生成工具生成
+// * 工具版本:V1.0.0.0
+// * 文件版本:V1.0.0.0
+// * Date:{DateTime.Now.ToString("yyyy:MM:dd HH:mm:ss")}
+// *
+";
+
+
+    string primaryKeyName=ex.GetPrimaryKeyName(dataConfig.Config.Columns);
+
+    string savePath=dataConfig.Config.SavePath;
+
+    var manager = Manager.Create(Host, GenerationEnvironment);
+
+
+    manager.StartNewFile(entityName + ".cs",savePath + "/WebAPI/Entities");
+#>
+<#= fileTitle #>
+using MES.Server.Domain.Entity;
+using SqlSugar;
+using MES.Server.Domain.Entity.Base;
+using System;
+
+namespace  <#= entityNamespace #>
+{
+    /// <summary>
+    /// <#= tableDesc #>
+    /// </summary>
+    [SugarTable("<#= tableName #>")]
+    public class <#= entityName #> : CommonEntity, IEnabled
+    {
+        <#=entityFieldStr#>
+    }
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( repositoryName + ".cs",savePath + "/WebAPI/Repository");
+#>
+<#= fileTitle #>
+using System.Collections.Generic;
+using MES.Server.Infrastruct.Repository;
+using MES.Server.Infrastruct.UnitOfWork;
+using MES.Server.Infrastruct.ServiceExtension.Authentication;
+using SqlSugar;
+using <#= entityNamespace #>;
+using <#= iRepositoryNamespaceName #>;
+
+namespace <#= repositoryNamespaceName #>
+{
+     /// <summary>
+     /// <#= tableDesc #>
+     /// </summary>
+ <#
+    if(isBaseRepository){
+ #>
+     public class <#= repositoryName #> : BaseRepository<<#= entityName #>>,<#= iRepositoryName #>
+ <#
+     }
+    else{
+ #>
+     public class <#= repositoryName #> : BaseRepositoryExtension, <#= iRepositoryName #>
+ <#
+     }
+ #>
+    {
+        public <#= repositoryName #> (IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
+    }
+}
+
+
+
+<#
+manager.EndBlock();
+manager.StartNewFile( iRepositoryName + ".cs",savePath + "/WebAPI/Repository");
+#>
+<#= fileTitle #>
+using MES.Server.Infrastruct.Repository;
+using <#= entityNamespace #>;
+
+namespace <#= iRepositoryNamespaceName #>
+{
+     /// <summary>
+     /// <#= tableDesc #>
+     /// </summary>
+     <#
+    if(isBaseRepository){
+     #>
+    public interface <#= iRepositoryName #>: IBaseRepository<<#= entityName #>>
+    <#
+     }
+    else{
+     #>
+    public interface <#= iRepositoryName #>: IBaseRepositoryExtension
+    <#
+     }
+     #>
+    {
+    }
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( serviceName + ".cs",savePath + "/WebAPI/Service");
+#>
+<#= fileTitle #>
+using MES.Server.Infrastruct.ServiceExtension;
+using MES.Server.Infrastruct.UnitOfWork;
+using MES.Server.Infrastruct.ServiceExtension.Authentication;
+using System.Collections.Generic;
+using MES.Server.Domain.Dto.InDto;
+using MES.Server.Domain.Model;
+using System.Linq;
+using MES.Common.Toolkit.Helper;  
+using MES.Server.Domain.Enum;
+using SqlSugar;
+using MES.Server.Infrastruct.Helper;
+using MES.Server.Domain.Dto.InDto.Search;
+using MES.Server.Infrastruct.Extension.SqlSugar;
+using <#= iServiceNameSpaceName #>;
+using <#= iRepositoryNamespaceName #>;
+using <#= entityNamespace #>;
+using <#= dtoInNameSpaceName #>;
+using <#= dtoOutNameSpaceName #>;
+
+
+
+namespace <#= baseNamespaceName #>.<#= serviceNamespaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>
+    /// </summary>
+    public class <#= serviceName #> : BaseService,  <#= iServiceName #>
+    {
+        private readonly IUnitOfWork unitOfWork;
+        private IAuthenticationService authenticationService;
+        private readonly <#= iRepositoryName #> repository;
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public  <#= serviceName #>(IUnitOfWork unitOfWork,IAuthenticationService  authenticationService, <#= iRepositoryName #> <#= repositoryName #>) 
+        :base(unitOfWork)
+        {
+            this.unitOfWork=unitOfWork;
+            this.authenticationService=authenticationService;
+            this.repository = <#= repositoryName #>;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Create(<#= entityName #>  entity)
+        {
+            //id生成
+            entity.<#= primaryKeyName #> = GUIDHelper.NewGuid;
+            entity.Create(authenticationService.GetUserNo());
+            repository.Insert(entity);
+        }
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Create(List<<#= entityName #>> entity)
+        {
+            //id生成
+            foreach (var item in entity)
+            {
+                item.<#= primaryKeyName #> = GUIDHelper.NewGuid;
+                item.Create(authenticationService.GetUserNo());
+            }
+
+            repository.InsertRange(entity);
+        }
+
+        ////// <summary>
+        /// 创建或更新
+        /// </summary>
+        /// <param name="data"></param>
+        public void CreateOrUpdate(<#= entityName #> entity)
+        {
+            if (string.IsNullOrWhiteSpace(entity.<#= primaryKeyName #>))
+            {
+                Create(entity);
+            }
+            else
+            {
+                Update(entity);
+            }
+        }
+
+        /// <summary>
+        /// 创建或更新
+        /// </summary>
+        /// <param name="data"></param>
+        public void CreateOrUpdate(List<<#= entityName #>> data)
+        {
+            var create = data.Where(f => string.IsNullOrWhiteSpace(f.<#= primaryKeyName #>)).ToList();
+            var update = data.Where(f => !string.IsNullOrWhiteSpace(f.<#= primaryKeyName #>)).ToList();
+
+            if (create?.Any() ?? false)
+            {
+                Create(create);
+            }
+            if (update?.Any() ?? false)
+            {
+                Update(update);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool Exist(string id)
+        {
+            return repository.Exists(f => f.<#= primaryKeyName #> == id);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        public void Delete(List<string> ids)
+        {
+            repository.DeleteByIdList(ids);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+
+        public void Update(<#= entityName #>  entity)
+        {
+            entity.Update(authenticationService.GetUserNo());
+            repository.Update(entity);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Update(List<<#= entityName #>> entity)
+        {
+            foreach (var item in entity)
+            {
+                item.Update(authenticationService.GetUserNo());
+            }
+            repository.UpdateRange(entity);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dto"></param>
+
+        public void SetEnabled(SetListEnabledInDto dto)
+        {
+            if (dto == null)
+            {
+                return;
+            }
+
+            //根据主键更新
+            repository.Update(f => new <#= entityName #>  { IsEnabled = dto.IsEnabled }, f => dto.Ids.Contains(f.<#= primaryKeyName #>));
+        }
+
+        /// <summary>
+        /// 根据ID获取数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public <#= entityName #>  GetByID(string id)
+        {
+            return repository.QueryById(id);
+        }
+
+        /// <summary>
+        /// 获取所有启用中的数据
+        /// </summary>
+        /// <returns></returns>
+        public List<<#= entityName #>> GetEnableList()
+        {
+            return repository.QueryListByCondition(f => f.IsEnabled == StatesEnum.Y.ToString());
+        }
+
+        /// <summary>
+        /// 获取所有启用中的数据(分页)
+        /// </summary>
+        /// <returns></returns>
+        public PageModel<<#= entityName #>> GetEnablePageList(int pageIndex, int pageSize)
+        {
+            return repository.QueryPageList(f => f.IsEnabled == StatesEnum.Y.ToString(), f => f.UpdateTime, pageIndex, pageSize, SqlSugar.OrderByType.Desc);
+        }
+
+        /// <summary>
+        /// 动态查询
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public PageModel<<#= searchOutDtoName #>> GetSearchPageList(<#= searchInDtoName #> dto)
+        {
+            Expressionable<<#= entityName #>> condition=new();
+
+            <#
+                foreach (var column in dataConfig.Config.Columns)
+                {
+                    string finalColumnName=CamelCaseUtility.Convert2Camel(column.ColumnName);
+                    if(ex.dbUtil.GetTypeByDBType(column.DataType) == "string")
+                    {
+                        WriteLine(@$"condition = condition.AndIF(!string.IsNullOrEmpty(dto.{finalColumnName}), (f) => f.{finalColumnName}.Contains(dto.{finalColumnName}) );");
+                    }
+                    else
+                    {
+                        WriteLine(@$"condition = condition.AndIF(dto.{finalColumnName}!=null, (f) => f.{finalColumnName} == dto.{finalColumnName});");
+                    }
+                }
+            #>
+            return repository.QueryPageList(condition.ToExpression(), null,dto.PageIndex, dto.PageSize).Map<<#= entityName #>, <#= searchOutDtoName #>>();
+        }
+
+        /// <summary>
+        /// 高级查询
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public PageModel<<#= searchOutDtoName #>> GetConditionPage(SearchConditionPageInDto dto)
+        {
+            var data = repository.GetPageModelByCondition(dto.Conditions, null, dto.PageIndex, dto.PageSize, false);
+            return data?.Map<<#= entityName #>, <#= searchOutDtoName #>>();
+        }
+    }
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( iServiceName + ".cs",savePath + "/WebAPI/Service");
+#>
+<#= fileTitle #>
+using MES.Server.Domain.Dto.InDto;
+using MES.Server.Domain.Model;
+using MES.Server.Infrastruct.ServiceExtension;
+using System.Collections.Generic;
+using System.Linq;
+using MES.Common.Toolkit.Helper;  
+using MES.Server.Domain.Enum;
+using MES.Server.Domain.Dto.InDto.Search;
+using <#= entityNamespace #>;
+using <#= dtoInNameSpaceName #>;
+using <#= dtoOutNameSpaceName #>;
+
+namespace <#= iServiceNameSpaceName #>
+{
+    public interface <#= iServiceName #> :IBaseService
+    {
+        void Create(<#= entityName #>  entity);
+        void Create(List<<#= entityName #>> entity);
+        void CreateOrUpdate(List<<#= entityName #>> data);
+        void Delete(List<string> ids);
+        <#= entityName #>  GetByID(string id);
+        List<<#= entityName #>> GetEnableList();
+        PageModel<<#= entityName #>> GetEnablePageList(int pageIndex, int pageSize);
+        void SetEnabled(SetListEnabledInDto dto);
+        void Update(<#= entityName #>  entity);
+        void Update(List<<#= entityName #> > entity);
+        void CreateOrUpdate(<#= entityName #> entity);
+        bool Exist(string id);
+        PageModel<<#= searchOutDtoName #>> GetSearchPageList(<#= searchInDtoName #> dto);
+        PageModel<<#= searchOutDtoName #>> GetConditionPage(SearchConditionPageInDto dto);
+    }
+}
+
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( controllerName + ".cs",savePath + "/WebAPI/Controller");
+#>
+<#= fileTitle #>
+using MES.Common.Toolkit.Helper;
+using MES.Server.Domain.Dto.InDto;
+using MES.Server.Infrastruct.ServiceExtension.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using MES.Server.Domain.Model;
+using MES.Server.Domain.Dto.InDto.Search;
+using System.Linq;
+
+using <#= iServiceNameSpaceName #>;
+using <#= entityNamespace #>;
+using <#= dtoInNameSpaceName #>;
+using <#= dtoOutNameSpaceName #>;
+
+namespace <#= controllerNameSpaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>
+    /// </summary>
+    public class <#= controllerName #> : BaseController
+    {
+        private <#= iServiceName #> <#= serviceParameter #>;
+        private IAuthenticationService authenticationService;
+
+        public <#= controllerName #>(<#= iServiceName #> <#= serviceParameter #>, IAuthenticationService authenticationService)
+        {
+            this.<#= serviceParameter #> = <#= serviceParameter #>;
+            this.authenticationService = authenticationService;
+        }
+
+        /// <summary>
+        /// 新增(生成工具通用接口)
+        /// </summary>
+        /// <param name="inDto"></param>
+        [HttpPost]
+        public void Create(<#= createInDtoName #> inDto)
+        {
+            <#= entityName #> <#= entityFileName #> = MapperHelper.AutoMap<<#= createInDtoName #>, <#= entityName #>>(inDto);
+
+            <#= entityFileName #>.Create(authenticationService.GetUserNo());
+
+            <#= serviceParameter #>.Create(<#= entityFileName #>);
+        }
+
+        /// <summary>
+        /// 删除(生成工具通用接口)
+        /// </summary>
+        /// <param name="dto"></param>
+        [HttpPost]
+        public void Delete(List<IdInDto> dto)
+        {
+            var ids=dto.Select(f=>f.Id).ToList();
+
+            <#= serviceParameter #>.Delete(ids);
+        }
+
+        /// <summary>
+        /// 启用、禁用(生成工具通用接口)
+        /// </summary>
+        /// <param name="dto"></param>
+        [HttpPost]
+        public void SetEnabled(SetListEnabledInDto dto)
+        {
+            <#= serviceParameter #>.SetEnabled(dto);
+        }
+
+        /// <summary>
+        /// 修改(生成工具通用接口)
+        /// </summary>
+        /// <param name="inDto"></param>
+        [HttpPost]
+        public void Update(<#= entityFileName #>InDto inDto)
+        {
+            //TODO 后续优化逻辑
+            var raw = <#= serviceParameter #>.GetByID(inDto.<#= primaryKeyName #>);
+            if (raw == null)
+            {
+                throw new System.Exception("NoData");
+            }
+            //获取原始对象后更新新的字段
+            <#= entityName #> <#= entityName #> = MapperHelper.AutoMap<<#= inDtoName #>, <#= entityName #>>(inDto, raw);
+            <#= entityName #>.Update(authenticationService.GetUserNo());
+
+            <#= serviceParameter #>.Update(<#= entityName #>);
+        }
+
+        /// <summary>
+        /// 动态查询(生成工具通用接口)
+        /// </summary>
+        /// <param name="dto"></param>
+        [HttpGet]
+        public PageModel<<#= searchOutDtoName #>> GetSearchPage([FromQuery]<#= searchInDtoName #> dto)
+        {
+            return <#= serviceParameter #>.GetSearchPageList(dto);
+        }
+
+        /// <summary>
+        /// 高级查询(生成工具通用接口)
+        /// </summary>
+        /// <param name="dto"></param>
+        [HttpPost]
+        public PageModel<<#= searchOutDtoName #>> GetConditionPage( SearchConditionPageInDto dto)
+        {
+            return <#= serviceParameter #>.GetConditionPage(dto);
+        }
+    }
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( entityFileName + "InDto.cs",savePath + "/WebAPI/Dto/InDto");
+#>
+
+<#= fileTitle #>
+namespace <#= dtoInNameSpaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>
+    /// </summary>
+    public class <#= entityFileName #>InDto
+    {
+        <#= dtoFieldStr #>
+    }
+
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( createInDtoName + ".cs",savePath + "/WebAPI/Dto/InDto");
+#>
+
+<#= fileTitle #>
+namespace <#= dtoInNameSpaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>
+    /// </summary>
+    public class <#= createInDtoName #>
+    {
+        <#= dtoFieldWithoutPrimaryKeyStr #>
+    }
+
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( entityFileName + "SearchInDto.cs",savePath + "/WebAPI/Dto/InDto");
+#>
+<#= fileTitle #>
+using SqlSugar;
+using System;
+using MES.Server.Domain.Dto.InDto;
+using MES.Server.System.Domain.Enums.Import;
+
+namespace <#= dtoInNameSpaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>动态查询
+    /// </summary>
+    public class <#= searchInDtoName #>:PageInDto
+    {
+        <#=ex.GetSearchOutDto(dataConfig.Config.Columns,true)#>
+    }
+}
+
+<#
+    manager.EndBlock();
+    manager.StartNewFile( entityFileName + "SearchOutDto.cs",savePath + "/WebAPI/Dto/OuDto");
+#>
+<#= fileTitle #>
+using System;
+namespace <#= dtoOutNameSpaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>动态查询结果
+    /// </summary>
+    public class <#= searchOutDtoName #>
+    {
+        <#=ex.GetSearchOutDto(dataConfig.Config.Columns,true)#>
+    }
+}
+
+<#
+manager.EndBlock();
+manager.Process(true);
+#>

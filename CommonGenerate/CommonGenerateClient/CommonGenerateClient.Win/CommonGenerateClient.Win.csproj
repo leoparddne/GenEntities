@@ -40,6 +40,58 @@
     <None Update="DLLS\System.Core.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="T4s\API\Common\Manager.ttinclude">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\ServiceGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\SearchOutDtoGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\SearchInDtoGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\RepositoryGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\IServiceGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\IRepositoryGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\Infrastruct_EnabledService.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\Infrastruct.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\Infrastruct _CommonService.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\InDtoGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\EntityGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\API\Common\CreateInDtoGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
     <None Update="T4s\API\Common\ControllerGenerate.tt">
       <Generator></Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
