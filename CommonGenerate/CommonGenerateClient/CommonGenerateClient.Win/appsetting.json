@@ -1,0 +1,199 @@
+﻿{
+  "API": "http://192.168.2.49:7040/",
+  "Template": [
+    {
+      "GenerateName": "API",
+      "Template": [
+        {
+          "Name": "EntityGenerate",
+          "Path": "T4s\\Api\\Common\\EntityGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Entities",
+          "FileNameTemplate": "{0}Entity",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "RepositoryGenerate",
+          "Path": "T4s\\Api\\Common\\RepositoryGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Repository",
+          "FileNameTemplate": "{0}Repository",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "IRepositoryGenerate",
+          "Path": "T4s\\Api\\Common\\IRepositoryGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Repository",
+          "FileNameTemplate": "I{0}Repository",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "ServiceGenerate",
+          "Path": "T4s\\Api\\Common\\ServiceGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Service",
+          "FileNameTemplate": "{0}Service",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "IServiceGenerate",
+          "Path": "T4s\\Api\\Common\\IServiceGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Service",
+          "FileNameTemplate": "I{0}Service",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "ControllerGenerate",
+          "Path": "T4s\\Api\\Common\\ControllerGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Controller",
+          "FileNameTemplate": "{0}Controller",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "InDtoGenerate",
+          "Path": "T4s\\Api\\Common\\InDtoGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Dto\\InDto",
+          "FileNameTemplate": "{0}InDto",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "CreateInDtoGenerate",
+          "Path": "T4s\\Api\\Common\\CreateInDtoGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Dto\\InDto",
+          "FileNameTemplate": "{0}CreateInDto",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "SearchInDtoGenerate",
+          "Path": "T4s\\Api\\Common\\SearchInDtoGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Dto\\InDto",
+          "FileNameTemplate": "{0}SearchInDto",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        },
+        {
+          "Name": "SearchOutDtoGenerate",
+          "Path": "T4s\\Api\\Common\\SearchOutDtoGenerate.tt",
+          "TemplatePath": "\\WebAPI\\Dto\\OutDto",
+          "FileNameTemplate": "{0}SearchOutDto",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ]
+        }
+      ]
+    },
+    {
+      "GenerateName": "WPF",
+      "Template": [
+        {
+          "Name": "WPFEntityGenerate",
+          "Path": "T4s\\WPF\\Common\\EntityGenerate.tt",
+          "TemplatePath": "\\WPF\\Entities",
+          "FileNameTemplate": "{0}Entity",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName", "TestParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "WPFEntityGenerate2",
+          "Path": "T4s\\WPF\\Common\\EntityGenerate1.tt",
+          "TemplatePath": "\\WPF\\Entities",
+          "FileNameTemplate": "{0}Entity2",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName1", "TestParameterName2" ],
+          "MainEntityParameterName": "ParameterName1" //标记多表时用做生成的结果文件名对应的表参数名称
+        }
+      ]
+    },
+    {
+      "GenerateName": "ListUserControl",
+      "Template": [
+        {
+          "Name": "ListUserControlCS",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserControlCS.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "{0}List",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlViewModel",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserControlViewModel.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "{0}ViewModel",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlXaml",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserControlXaml.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "{0}List",
+          "FileExt": ".xaml",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlXaml-Model",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserControlModel.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "{0}ListModel",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlXaml-SearchInDto",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserControlSearchInDto.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "{0}SearchInDto",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlXaml-APIRoute",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserControlAPIRoute.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "{0}APIRoute",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlXaml-ControlCS",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserModifyControlCS.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "Modify{0}",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControlXaml-ModifyViewModel",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserModifyViewModel.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "Modify{0}ViewModel",
+          "FileExt": ".cs",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        },
+        {
+          "Name": "ListUserControl-ListModifyControl",
+          "Path": "T4s\\WPF\\Common\\ListUserControl\\ListUserModifyControlXaml.tt",
+          "TemplatePath": "\\WPF\\ListControl",
+          "FileNameTemplate": "Modify{0}",
+          "FileExt": ".xaml",
+          "TableParameterName": [ "ParameterName" ],
+          "MainEntityParameterName": "ParameterName" //标记多表时用做生成的结果文件名对应的表参数名称
+        }
+      ]
+    }
+  ]
+}

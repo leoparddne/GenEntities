@@ -604,9 +604,9 @@ namespace CommonGenerateClient.Win.ViewModel
             string input = File.ReadAllText($@"{ResourceHelper.TargetDir}{generateTemplate.Path}");
 
             host.StandardAssemblyReferences.Add("Mono.TextTemplating.dll");
-            host.StandardAssemblyReferences.Add("MES.CodeDesignerLight.dll");
+            host.StandardAssemblyReferences.Add("CommonGenerateClient.Win.dll");
 
-            host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "CodeDesigner.Resource.dll");
+            host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "CommonGenerateClient.Resource.dll");
 
             host.AddStandardAssemblyReferences(ResourceHelper.TargetDir + "netstandard.dll");
 
@@ -617,7 +617,7 @@ namespace CommonGenerateClient.Win.ViewModel
 
 
             host.StandardAssemblyReferences.Add("System.Core.dll");
-            host.StandardImports.Add("MES.CodeDesignerLight.Models");
+            host.StandardImports.Add("CommonGenerateClient.Win.Models");
 
             string output = engine.ProcessTemplate(input, host);
 

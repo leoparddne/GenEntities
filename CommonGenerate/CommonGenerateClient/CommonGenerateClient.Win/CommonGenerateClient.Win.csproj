@@ -26,6 +26,24 @@
 
   <ItemGroup>
     <Folder Include="DLLS\" />
+    <Folder Include="T4s\API\AutoService\" />
+    <Folder Include="T4s\WPF\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsetting.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DLLS\netstandard.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DLLS\System.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="T4s\API\Common\ControllerGenerate.tt">
+      <Generator></Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
