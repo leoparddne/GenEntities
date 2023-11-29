@@ -16,10 +16,10 @@
 2. Manager.ttinclude中提供了文件相关操作
 3. 主要逻辑都在模板中,使用过程需要调整模板中tableName字段及其他相关字段,随后在vs中保存以触发生成逻辑
 
-### GenEntities-Mysql
+### ~~GenEntities-Mysql(旧项目)~~
 对GenEntities进行mysql适配后的版本,使用方法与GenEntities一致
 
-### OracleGenerate
+### ~~OracleGenerate(旧项目)~~
 1. 在GenEntities基础上适配oracle后开发的windows gui工具
 2. 将数据库连接字符串调整到配置文件中
 
@@ -142,7 +142,7 @@ manager.EndBlock(); //结束当前文件写入
 manager.Process(true); //解析文件,将生成的数据导入配置的文件中
 ```
 
-### GenEntities-Mysql
+### ~~GenEntities-Mysql(旧项目)~~~
 主要逻辑在Generate.tt文件中
 
 另外Manager.ttinclude文件中包含了创建文件的操作,使用此方法需要将Generate.tt文件中hostspecific设置为true
