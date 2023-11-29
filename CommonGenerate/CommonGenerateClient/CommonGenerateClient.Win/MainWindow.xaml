@@ -3,10 +3,102 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:CommonGenerateClient.Win"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <!--<ResourceDictionary>
+            <converter:DataSourceTypeToVisibilityConterter x:Key="dataSourceTypeToVisibilityConterter"/>
+        </ResourceDictionary>-->
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"></BooleanToVisibilityConverter>
+    </Window.Resources>
     <Grid>
+        <StackPanel>
+            <hc:ComboBox AutoComplete="True" ShowClearButton="True" ItemsSource="{Binding DBSourceList}" SelectedItem="{Binding SelectDB,Mode=TwoWay}" IsEditable="False" 
+                         hc:TitleElement.Title="数据库" hc:InfoElement.TitlePlacement="Left"  DisplayMemberPath="Label" 
+                         hc:InfoElement.Necessary="True" Margin="8"/>
 
+            <!--<hc:ComboBox AutoComplete="True" ShowClearButton="True" ItemsSource="{Binding DataSourceList}" SelectedItem="{Binding SelectModel}" IsEditable="True"
+                             hc:InfoElement.Placeholder="请选择表"  DisplayMemberPath="Label"  VerticalContentAlignment="Center" VerticalAlignment="Center"
+                             hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="表" 
+                             hc:InfoElement.Necessary="True"  Margin="8"/>-->
+
+            <!--<hc:AutoCompleteTextBox VerticalAlignment="Center" Margin="5 0 5 5" ItemsSource="{Binding FilterDataSourceList}" 
+                                        hc:TitleElement.Title="表" hc:InfoElement.TitlePlacement="Left"
+                                        Text="{Binding SearchTableText}"  DisplayMemberPath="Label" VirtualizingPanel.IsVirtualizing="True" 
+                                    AllowDrop="True" IsDropDownOpen="True"/>-->
+
+            <!--<controls:BaseComboBox DisplayMemberPath="Label" SelectedItem="{Binding SelectModel,Mode=TwoWay}"
+                                            x:Name="searchTextBox" IsEditable="True" AutoComplete="False"
+                                            ItemsSource="{Binding DataSourceList}" hc:TitleElement.Title="请选择表" FontSize="14" Margin="5 0 5 5"/>-->
+            <StackPanel Orientation="Horizontal">
+                <RadioButton GroupName="radioMode" Content="批量生成" Margin="5" IsChecked="{Binding ISBatchGenerateMode}"/>
+                <RadioButton GroupName="radioMode" Content="模板生成" Margin="5" Name="radioTemplateMode"/>
+            </StackPanel>
+
+            <StackPanel Margin="5" Visibility="{Binding ISBatchGenerateMode,Converter={StaticResource booleanToVisibilityConverter}}">
+                <hc:ComboBox ItemsSource="{Binding BatchTemplates}" SelectedItem="{Binding SelectBatchTemplate}" DisplayMemberPath="GenerateName" hc:TitleElement.Title="批量生成tag" hc:TitleElement.TitlePlacement="Left"  FontSize="14"  IsEnabled="{Binding ISBatchGenerateMode}"/>
+            </StackPanel>
+
+            <StackPanel Margin="5" Visibility="{ Binding ElementName=radioTemplateMode,Path=IsChecked,Converter={StaticResource booleanToVisibilityConverter}}">
+                <hc:ComboBox  DisplayMemberPath="Name" SelectedItem="{Binding SelectTemplate,Mode=TwoWay}" IsEnabled="{ Binding ElementName=radioTemplateMode,Path=IsChecked}"  IsEditable="False" AutoComplete="False" ItemsSource="{Binding TemplateList}" hc:TitleElement.Title="请选择模板" hc:TitleElement.TitlePlacement="Left" FontSize="14"/>
+            </StackPanel>
+
+            <!--<DockPanel  Margin=" 5 0 0 0">
+                <Label Content="前缀" Style="{x:Null}" DockPanel.Dock="Left" FontSize="13"/>
+                <TextBox ToolTip="前缀" Text="{Binding TxtPrefix,UpdateSourceTrigger=PropertyChanged}" 
+                         HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+            </DockPanel>-->
+
+            <DataGrid ItemsSource="{Binding ParameterMapperList}" AutoGenerateColumns="False" Margin="8">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="参数名"/>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Parameter}"/>
+                                <!--<hc:ComboBox AutoComplete="True" ShowClearButton="True" ItemsSource="{Binding DataSourceList}" SelectedItem="{Binding SelectModel}" IsEditable="True"
+                         hc:InfoElement.Placeholder="请选择表"  DisplayMemberPath="Label"  VerticalContentAlignment="Center" VerticalAlignment="Center"
+                         hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="表" 
+                         hc:InfoElement.Necessary="True" Margin="8 8 8 0"/>-->
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="表名"/>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock Text="{Binding TableName}"/>-->
+                                <hc:ComboBox AutoComplete="True" ShowClearButton="True"
+                                             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window,Mode=FindAncestor},Path=DataContext.DataSourceList}"
+                                             SelectedItem="{Binding SelectTable,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True"
+                         hc:InfoElement.Placeholder="请选择表"  DisplayMemberPath="Label"  VerticalContentAlignment="Center"
+                         hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="表" 
+                         hc:InfoElement.Necessary="True" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="表前缀" MinWidth="140"/>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <hc:TextBox Text="{Binding TablePreFix,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Command="{Binding GenerateCommand}" Foreground="Black" Content="生成" Height="50" FontSize="20" HorizontalAlignment="Stretch" Margin="10 5"/>
+        </StackPanel>
     </Grid>
 </Window>

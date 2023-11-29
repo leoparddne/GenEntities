@@ -5,6 +5,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+	  <UseWindowsForms>true</UseWindowsForms>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +15,17 @@
     <PackageReference Include="Mono.TextTemplating" Version="2.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="107.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CommonGenerateClient.Resource\CommonGenerateClient.Resource.csproj" />
+    <ProjectReference Include="..\Utility\Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DLLS\" />
   </ItemGroup>
 
 </Project>
