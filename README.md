@@ -14,6 +14,15 @@
 ### ~~AutoInfrastructGenerate(旧项目)~~
 1. Entity.tt中提供了主要的逻辑
 2. Manager.ttinclude中提供了文件相关操作
+3. 主要逻辑都在模板中,使用过程需要调整模板中tableName字段及其他相关字段,随后在vs中保存以触发生成逻辑
+
+### GenEntities-Mysql
+对GenEntities进行mysql适配后的版本,使用方法与GenEntities一致
+
+### OracleGenerate
+1. 在GenEntities基础上适配oracle后开发的windows gui工具
+2. 将数据库连接字符串调整到配置文件中
+
 
 ### QA 
 如果遇到类型“DTE”同时存在于“EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a”和“Microsoft.VisualStudio.Interop, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a”中	
