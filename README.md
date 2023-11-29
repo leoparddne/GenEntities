@@ -10,6 +10,7 @@
 
 ### CommonGenerate
 分为服务端和客户端，服务端解析数据库、表字段等信息，客户端负责生成逻辑，可以在客户端通过添加T4模板文件的方式新增生成模板。
+![image](./img//CommonGenerate_main.png)
 
 ### ~~AutoInfrastructGenerate(旧项目)~~
 1. Entity.tt中提供了主要的逻辑
