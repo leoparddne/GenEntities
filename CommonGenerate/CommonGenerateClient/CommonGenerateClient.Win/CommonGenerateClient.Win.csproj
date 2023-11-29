@@ -27,7 +27,6 @@
   <ItemGroup>
     <Folder Include="DLLS\" />
     <Folder Include="T4s\API\AutoService\" />
-    <Folder Include="T4s\WPF\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -95,6 +94,50 @@
     <None Update="T4s\API\Common\ControllerGenerate.tt">
       <Generator></Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserControlAPIRoute.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserControlCS.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserControlModel.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserControlSearchInDto.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserControlViewModel.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserControlXaml.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserModifyControlCS.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserModifyControlXaml.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\ListUserControl\ListUserModifyViewModel.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\EntityGenerate.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </None>
+    <None Update="T4s\WPF\Common\EntityGenerate1.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
     </None>
   </ItemGroup>
 

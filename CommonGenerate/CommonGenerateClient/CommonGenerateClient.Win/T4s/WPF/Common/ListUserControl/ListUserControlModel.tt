@@ -1,0 +1,97 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ assembly name="Utility.dll" #>
+<#@ import namespace="CommonGenerateClient.Resource.Models.WebAPI" #>
+<#@ import namespace="Utility.DB" #>
+<#@ import namespace="Utility.Common" #>
+<#
+    //System.Diagnostics.Debugger.Launch();
+
+    string modelConfigStr=Host.ResolveParameterValue(null, null, "ParameterName");
+    //modelConfigStr=System.Web.HttpUtility.UrlDecode(modelConfigStr);
+
+
+    modelConfigStr=modelConfigStr.Replace(@"\\",@"\").Replace("\"","");
+
+    var pathByte=Convert.FromBase64String(modelConfigStr);
+    modelConfigStr=System.Text.Encoding.UTF8.GetString(pathByte);
+
+    string json= File.ReadAllText(modelConfigStr);
+
+    
+    var allModel=JsonConvert.DeserializeObject<Dictionary<string, InfrastructModel>>(json);
+
+    InfrastructModel dataConfig=allModel["ParameterName"];
+
+
+    GenerateEx ex=new GenerateEx(dataConfig.Config.DBType);
+    var entityFieldStr = ex.GenerateTable( dataConfig.Config.Columns, true, false);
+    var dtoFieldStr = ex.GenerateTable( dataConfig.Config.Columns, false, false,true);
+    var dtoFieldWithoutPrimaryKeyStr = ex.GenerateTable( dataConfig.Config.Columns, false, false,true,true);
+
+    string baseNamespaceName="MES.Server."+dataConfig.Config.BaseNamespaceName; //基础名称空间
+    
+
+    string entityNamespace= baseNamespaceName+".Domain.Entity"; //实体名称空间
+    string repositoryNamespaceName = baseNamespaceName+".Infrastruct.Repository"; //仓储名称空间
+    string iRepositoryNamespaceName = baseNamespaceName+".Domain.IRepository"; //仓储接口名称空间
+    string serviceNamespaceName = baseNamespaceName+".Application.Service"; //服务名称空间
+    string iServiceNameSpaceName = baseNamespaceName+".Application.IService"; //服务接口名称空间
+    string controllerNameSpaceName = baseNamespaceName+".Controllers";//控制器名称空间
+    string dtoInNameSpaceName = baseNamespaceName+".Domain.Dto.InDto";//dto名称空间
+    string dtoOutNameSpaceName = baseNamespaceName+".Domain.Dto.OutDto";//dto名称空间
+
+
+    bool isBaseRepository=true; //是否生成基础仓储模型
+
+    string tableDesc= dataConfig.Config.TableDesc??"";//数据库注释
+    string tableName= dataConfig.Config.TableName;//数据库表名称
+    string entityFileName=dataConfig.Config.EntityName; //实体基本名称
+
+
+    string entityName=entityFileName+"Entity"; //实体文件名称
+    string repositoryName=entityFileName+"Repository"; //仓储名称
+    string iRepositoryName="I"+repositoryName; //仓储基类
+    string serviceName= entityFileName+"Service"; //服务名称
+    string serviceParameter=Char.ToLower(serviceName[0])+ serviceName.Substring(1);//service参数名称
+
+
+    string iServiceName="I"+serviceName; //服务接口名称
+    string controllerName= entityFileName+"Controller";//控制器名称
+    string inDtoName= entityFileName + "InDto";
+    string searchInDtoName=entityFileName+"SearchInDto"; //动态查询
+    string searchOutDtoName=entityFileName+"SearchOutDto"; //动态查询
+    string createInDtoName=entityFileName+"CreateInDto"; //创建(不包含主键字段)
+
+    string fileTitle=@$"
+// *
+// * 此代码由生成工具生成
+// * 工具版本:V1.0.0.0
+// * 文件版本:V1.0.0.0
+// * Date:{DateTime.Now.ToString("yyyy:MM:dd HH:mm:ss")}
+// *
+";
+
+
+    string primaryKeyName=ex.GetPrimaryKeyName(dataConfig.Config.Columns);
+
+    string savePath=dataConfig.Config.SavePath;
+#>
+<#= fileTitle #>
+using System;
+namespace <#= dtoOutNameSpaceName #>
+{
+    /// <summary>
+    /// <#= tableDesc #>动态查询结果
+    /// </summary>
+    public class <#= entityFileName #>ListModel
+    {
+        <#=ex.GetSearchOutDto(dataConfig.Config.Columns,true)#>
+    }
+}

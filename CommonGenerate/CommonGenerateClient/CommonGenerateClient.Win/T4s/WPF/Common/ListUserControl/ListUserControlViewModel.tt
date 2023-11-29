@@ -1,0 +1,210 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ assembly name="Utility.dll" #>
+<#@ import namespace="CommonGenerateClient.Resource.Models.WebAPI" #>
+<#@ import namespace="Utility.DB" #>
+<#@ import namespace="Utility.Common" #>
+<#
+    //System.Diagnostics.Debugger.Launch();
+
+    string modelConfigStr=Host.ResolveParameterValue(null, null, "ParameterName");
+    //string testParameter=Host.ResolveParameterValue(null, null, "TestParameterName");
+    //modelConfigStr=System.Web.HttpUtility.UrlDecode(modelConfigStr);
+
+
+    modelConfigStr=modelConfigStr.Replace(@"\\",@"\").Replace("\"","");
+
+    var pathByte=Convert.FromBase64String(modelConfigStr);
+    modelConfigStr=System.Text.Encoding.UTF8.GetString(pathByte);
+
+    string json= File.ReadAllText(modelConfigStr);
+    var allModel=JsonConvert.DeserializeObject<Dictionary<string, InfrastructModel>>(json);
+
+
+    InfrastructModel dataConfig=allModel["ParameterName"];
+
+    GenerateEx ex=new GenerateEx(dataConfig.Config.DBType);
+    var entityFieldStr = ex.GenerateTable( dataConfig.Config.Columns, true, false);
+    var dtoFieldStr = ex.GenerateTable( dataConfig.Config.Columns, false, false,true);
+    var dtoFieldWithoutPrimaryKeyStr = ex.GenerateTable( dataConfig.Config.Columns, false, false,true,true);
+
+    string baseNamespaceName="MES.Server."+dataConfig.Config.BaseNamespaceName; //基础名称空间
+    
+
+    string entityNamespace= baseNamespaceName+".Domain.Entity"; //实体名称空间
+    string repositoryNamespaceName = baseNamespaceName+".Infrastruct.Repository"; //仓储名称空间
+    string iRepositoryNamespaceName = baseNamespaceName+".Domain.IRepository"; //仓储接口名称空间
+    string serviceNamespaceName = baseNamespaceName+".Application.Service"; //服务名称空间
+    string iServiceNameSpaceName = baseNamespaceName+".Application.IService"; //服务接口名称空间
+    string controllerNameSpaceName = baseNamespaceName+".Controllers";//控制器名称空间
+    string dtoInNameSpaceName = baseNamespaceName+".Domain.Dto.InDto";//dto名称空间
+    string dtoOutNameSpaceName = baseNamespaceName+".Domain.Dto.OutDto";//dto名称空间
+
+
+    bool isBaseRepository=true; //是否生成基础仓储模型
+
+    string tableDesc= dataConfig.Config.TableDesc??"";//数据库注释
+    string tableName= dataConfig.Config.TableName;//数据库表名称
+    string entityFileName=dataConfig.Config.EntityName; //实体基本名称
+
+
+    string entityName=entityFileName+"Entity"; //实体文件名称
+    string repositoryName=entityFileName+"Repository"; //仓储名称
+    string iRepositoryName="I"+repositoryName; //仓储基类
+    string serviceName= entityFileName+"Service"; //服务名称
+    string serviceParameter=Char.ToLower(serviceName[0])+ serviceName.Substring(1);//service参数名称
+
+
+    string iServiceName="I"+serviceName; //服务接口名称
+    string controllerName= entityFileName+"Controller";//控制器名称
+    string inDtoName= entityFileName + "InDto";
+    string searchInDtoName=entityFileName+"SearchInDto"; //动态查询
+    string searchOutDtoName=entityFileName+"SearchOutDto"; //动态查询
+    string createInDtoName=entityFileName+"CreateInDto"; //创建(不包含主键字段)
+
+    string fileTitle=@$"
+// *
+// * 此代码由生成工具生成
+// * 工具版本:V1.0.0.0
+// * 文件版本:V1.0.0.0
+// * Date:{DateTime.Now.ToString("yyyy:MM:dd HH:mm:ss")}
+// *
+";
+
+
+    string primaryKeyName=ex.GetPrimaryKeyName(dataConfig.Config.Columns);
+
+    string savePath=dataConfig.Config.SavePath;
+
+    //var manager = Manager.Create(Host, GenerationEnvironment);
+
+
+    //manager.StartNewFile(entityName + ".cs",savePath + "/WebAPI/Entities");
+#>
+<#= fileTitle #>
+
+//由代码生成工具生成
+using HandyControl.Controls;
+using HandyControl.Tools.Extension;
+using MES.Client.Models.Dtos;
+using MES.Client.Models.Helpers;
+using MES.Client.Models.Models;
+using MES.Client.Toolkit.Comm;
+using MES.Client.Toolkit.Enums;
+using MES.Client.Toolkit.Helper;
+using MES.Client.Toolkit.HTTP;
+using MES.Client.UICommon.Comm;
+using MES.Client.UICommon.Controls;
+using MES.Client.UICommon.Controls.Models;
+using MES.Common.Toolkit.Helper;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+
+namespace MES.Client.BaseData.ViewModels
+{
+    public class <#= entityFileName #>ListViewModel : CommonListViewModel<<#= entityFileName #>SearchInDto, <#= entityFileName #>ListModel>
+    {
+
+        private ObservableCollection<SelectTypeModel> enabledStatusList = new();
+        /// <summary>
+        /// 是否可用下拉数据源
+        /// </summary>
+        public ObservableCollection<SelectTypeModel> EnabledStatusList { get => enabledStatusList; set { enabledStatusList = value; PCEH(); } }
+
+        /// <summary>
+        /// 启用禁用命令
+        /// </summary>
+        public ICommand EnabledCommand { get; set; }
+
+        public <#= entityFileName #>ListViewModel()
+        {
+            SearchCommand = new CommandBase(async l =>
+            {
+                var loading = Dialog.Show(new UICommon.Controls.LoadingCircle(), DialogToken);
+                try
+                {
+                    SearchParameter.PageIndex = PageIndex;
+                    SearchParameter.PageSize = PageSize;
+                    var ret = await APIHelper.GetSendDtoAsync<PaginationData>(<#= entityFileName #>APIRoute.Get<#= entityFileName #>List, CommonHelper.InDtoToDictionary(SearchParameter));
+                    if (ret != null) 
+                    {
+                        TotalCount = ret.TotalCount;
+                        TotalPages = ret.TotalPages;
+                        DataList = JsonConvert.DeserializeObject<ObservableCollection<<#= entityFileName #>ListModel>>(ret.DataList.ToJson()) ?? new();
+                    }
+                }
+                finally
+                {
+                    loading.Close();
+                }
+            });
+            ModifyCommand = new CommandBase(async l =>
+            {
+                if (l is not <#= entityFileName #>ListModel dataModel)
+                    dataModel = new();
+                if (await Dialog.Show(new Modify<#= entityFileName #>(dataModel, Langs, string.IsNullOrEmpty(dataModel.<#= primaryKeyName #>) ? OperateStateEmun.Add : OperateStateEmun.Edit), DialogToken).GetResultAsync<bool>())
+                    SearchCommand?.Execute(null);
+            });
+            DeleteCommand = new CommandBase(async l =>
+            {
+                if (l is <#= entityFileName #>ListModel deleteItem && Message.Ask(Langs.LangGetValue("DeleteConfirm")))
+                {
+                    var ret = await APIHelper.PostSendAsync(<#= entityFileName #>APIRoute.Delete<#= entityFileName #>, new List<IdInDto>() { new IdInDto { Id = deleteItem.<#= primaryKeyName #> } });
+                    if (ret != null)
+                    {
+                        SearchCommand.Execute(null);
+                        MESGrowl.MESSuccess(Langs.LangGetValue("DeleteSuccessfully"));
+                    }
+                }
+            });
+            EnabledCommand = new CommandBase(async l =>
+            {
+                if (SelectedItem != null && Message.Ask(LangHelper.GetSplicingMessage(Langs, "OperateList", new List<string> { Langs.LangGetValue(l.ToString() == "1" ? "Disable" : "Enable") })))
+                {
+                    var ret = await APIHelper.PostSendAsync(<#= entityFileName #>APIRoute.SetEnabled<#= entityFileName #>, new SetListEnabledInDto()
+                    {
+                        IsEnabled = l.ToString() == "1" ? "N" : "Y",
+                        Ids = new List<string>() { SelectedItem.<#= primaryKeyName #> },
+                    });
+                    if (ret != null)
+                    {
+                        MESGrowl.MESSuccess(Langs.LangGetValue("OperateSuccess"));
+                        SearchCommand.Execute(null);
+                    }
+                }
+            });
+        }
+
+        public async override void CommViewModelLoad()
+        {
+            EnabledStatusList = new ObservableCollection<SelectTypeModel>()
+            {
+                new SelectTypeModel
+                {
+                    Value = string.Empty,
+                    Label = Langs.LangGetValue("All")
+                },
+                new SelectTypeModel
+                {
+                    Value = "Y",
+                    Label = Langs.LangGetValue("Enable")
+                },
+                new SelectTypeModel
+                {
+                    Value = "N",
+                    Label = Langs.LangGetValue("Disable")
+                }
+            };
+            SearchCommand?.Execute(null);
+        }
+    }
+}
