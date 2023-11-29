@@ -12,6 +12,33 @@
 分为服务端和客户端，服务端解析数据库、表字段等信息，客户端负责生成逻辑，可以在客户端通过添加T4模板文件的方式新增生成模板。
 ![image](./img//CommonGenerate_main.png)
 
+#### 服务端 - CommonGenerateServer
+主项目为Server.WebAPI，需要在配置文件【appsettings.json】中添加数据库信息，可参考现有配置添加
+
+
+#### 客户端 - CommonGenerateClient
+主项目为CommonGenerateClient.Win，需要在配置文件【appsettings.json】中添加服务端信息，维护API字段即可。  
+如果需要添加自定义模板只需要在配置文件中Template节点中维护模板路径即可，模板为T4模板。  
+
+选择模板后将根据模板配置需要的表数量要求选择的表(z界面中显示为参数)，参数的现实依据为所选的模板类型中所有的TableParameterName去重得到。
+
+需要注意模板执行方式有两种，
+1. 根据维护的模板批量执行，将多个模板维护在Template中同一个对象内部，参考现有配置文件。
+2. 单个执行指定的模板
+
+
+部分参数
+```
+{
+  "Name": "EntityGenerate", //模板名称
+  "Path": "T4s\\Api\\Common\\EntityGenerate.tt",//模板所在路径(程序路径下的位置)
+  "TemplatePath": "\\WebAPI\\Entities",//生成后的模板路径(多个模板可以分别生成在不同路径，生成路径的基础路径为生成时手动选择，随后在选择的目录中再生成配置的子目录再将生成后的模板内容存放到这个子目录)
+  "FileNameTemplate": "{0}Entity",//生成的文件名称
+  "FileExt": ".cs",//生成的文件后缀名
+  "TableParameterName": [ "ParameterName" ]//需要的表参数名称，无具体意义仅做标识，同一个参数名代表同一个选择的表
+}
+```
+
 ### ~~AutoInfrastructGenerate(旧项目)~~
 1. Entity.tt中提供了主要的逻辑
 2. Manager.ttinclude中提供了文件相关操作
