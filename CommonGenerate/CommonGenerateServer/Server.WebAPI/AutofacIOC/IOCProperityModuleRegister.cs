@@ -5,9 +5,11 @@ using Domain.Repository.DBScheme.Oracle;
 using Domain.Repository.DBScheme.Postgre;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
+using Service.IService.Scheme.MySql;
 using Service.IService.Scheme.Oracle;
 using Service.IService.Scheme.Postgre;
 using Service.Service;
+using Service.Service.Scheme.MySql;
 using Service.Service.Scheme.Oracle;
 using Service.Service.Scheme.Postgre;
 using System;
@@ -42,6 +44,9 @@ namespace Server.WebAPI.AutofacIOC
             builder.RegisterType<UserTabCommentsRepository>().As<IUserTabCommentsRepository>().AsImplementedInterfaces().PropertiesAutowired().SingleInstance();
             builder.RegisterType<UserTablesRepository>().As<IUserTablesRepository>().AsImplementedInterfaces().PropertiesAutowired().SingleInstance();
             builder.RegisterType<PostgreTableRepository>().As<IPostgreTableRepository>().AsImplementedInterfaces().PropertiesAutowired().SingleInstance();
+
+
+            builder.RegisterType<MySqlTableService>().As<IMysqlTableService>().AsImplementedInterfaces().PropertiesAutowired().SingleInstance();
 
         }
     }

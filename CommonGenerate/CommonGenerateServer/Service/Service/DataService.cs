@@ -3,6 +3,7 @@ using Domain.DTO;
 using Infrastruct.Config;
 using Infrastruct.Ex;
 using Service.IService;
+using Service.IService.Scheme.MySql;
 using Service.IService.Scheme.Oracle;
 using Service.IService.Scheme.Postgre;
 using SqlSugar;
@@ -22,7 +23,10 @@ namespace Service.Service
         IUserColCommentsService userColCommentsService;
 
 
-        public DataService(IUserTabCommentsService userTabCommentsService, IPostgreTableService postgreTableService, IUserTabColumnsService userTabColumnsService, IUserConstraintsService userConstraintsService, IUserColCommentsService userColCommentsService, IPostgreTableColumnService postgreTableColumnService)
+        IMysqlTableService mysqlTableService;
+
+
+        public DataService(IUserTabCommentsService userTabCommentsService, IPostgreTableService postgreTableService, IUserTabColumnsService userTabColumnsService, IUserConstraintsService userConstraintsService, IUserColCommentsService userColCommentsService, IPostgreTableColumnService postgreTableColumnService, IMysqlTableService mysqlTableService)
         {
             this.userTabCommentsService = userTabCommentsService;
             this.postgreTableService = postgreTableService;
@@ -30,6 +34,7 @@ namespace Service.Service
             this.userConstraintsService = userConstraintsService;
             this.userColCommentsService = userColCommentsService;
             this.postgreTableColumnService = postgreTableColumnService;
+            this.mysqlTableService = mysqlTableService;
         }
 
         public UserTabCommentsEntity GetByName(string dataName, string configID)
@@ -96,6 +101,7 @@ namespace Service.Service
             switch (dbType)
             {
                 case DbType.MySql:
+                    return mysqlTableService.GetDataDetail(table, configID);
                     break;
                 case DbType.SqlServer:
                     break;
@@ -191,6 +197,7 @@ namespace Service.Service
             switch (dbType)
             {
                 case DbType.MySql:
+                    return mysqlTableService.GetList(configID);
                     break;
                 case DbType.SqlServer:
                     break;

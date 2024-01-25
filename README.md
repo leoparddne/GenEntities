@@ -139,6 +139,17 @@ inner join pg_type on pg_type.oid = pg_attribute.atttypid
 where pg_class.relname = 'bd_basic_data_type' and pg_constraint.contype='p'
 ```
 
+### mysql
+获取表
+```
+show tables
+```
+
+获取表中的字段
+```
+DESCRIBE t_admin
+```
+
 
 
 ### 基本数据配置
