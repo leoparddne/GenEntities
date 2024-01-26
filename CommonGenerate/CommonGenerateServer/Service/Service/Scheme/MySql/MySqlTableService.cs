@@ -5,6 +5,7 @@ using Infrastruct.Base.Service;
 using Infrastruct.Base.UOF;
 using Infrastruct.Ex;
 using Service.IService.Scheme.MySql;
+using System;
 using System.Collections.Generic;
 
 namespace Service.Service.Scheme.MySql
@@ -33,8 +34,8 @@ namespace Service.Service.Scheme.MySql
                     Comment = field.Comment,
                     DataDefault = field.Default,
                     DataType = field.Type,
-                    IsNullable = field.Null == "NO" ? false : true,
-                    ISPrimaryKey = field.Key == "PRI"
+                    ISPrimaryKey = field.Key == "PRI",
+                    Nullable = field.Null == "NO" ? "N" : "Y",
                 });
             }
 
