@@ -5,8 +5,8 @@ using Infrastruct.Base.Service;
 using Infrastruct.Base.UOF;
 using Infrastruct.Ex;
 using Service.IService.Scheme.MySql;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Service.Service.Scheme.MySql
 {
@@ -14,6 +14,24 @@ namespace Service.Service.Scheme.MySql
     {
         public MySqlTableService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
+        }
+
+        public UserTabCommentsEntity GetByName(string dataName, string configID)
+        {
+            ChangeDB(configID);
+            var fieldList = SqlQuery<MySqlTableEntity>($"show table status where Name= '{dataName}';");
+            if (fieldList.IsNullOrEmpty())
+            {
+                return null;
+            }
+            var data = fieldList.First();
+
+            return new UserTabCommentsEntity
+            {
+                Comments = data.Comment,
+                TableName = data.Name,
+                TableType = string.Empty
+            };
         }
 
         public IList<UserTabColumnOutDto> GetDataDetail(string table, string configID)

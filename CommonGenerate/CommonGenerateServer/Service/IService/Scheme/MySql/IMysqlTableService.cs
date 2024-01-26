@@ -10,6 +10,7 @@ namespace Service.IService.Scheme.MySql
 {
     public interface IMysqlTableService
     {
+        UserTabCommentsEntity GetByName(string dataName, string configID);
         IList<UserTabColumnOutDto> GetDataDetail(string table, string configID);
         List<UserTabCommentsEntity> GetList(string configID);
     }
