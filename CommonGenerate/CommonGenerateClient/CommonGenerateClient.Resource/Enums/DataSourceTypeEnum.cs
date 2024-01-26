@@ -11,7 +11,7 @@ namespace CommonGenerateClient.Resource.Enums
         /// </summary>
         Tabel = 0,
         /// <summary>
-        /// 常理
+        /// 常量
         /// </summary>
         Constant = 1,
         /// <summary>

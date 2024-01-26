@@ -11,6 +11,7 @@ namespace Utility.DB.DBFieldTypeEx
             switch (dbType)
             {
                 case "MySql":
+                    return new MySqlEx();
                     break;
 
                 case "SqlServer":
