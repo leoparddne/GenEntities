@@ -142,15 +142,16 @@ where pg_class.relname = 'bd_basic_data_type' and pg_constraint.contype='p'
 ### mysql
 获取表
 ```
-show tables
+show table status  -- 获取表的信息(含注释等信息)
+show tables --获取所有表名
 ```
 
 获取表中的字段
 ```
-DESCRIBE t_admin
+DESCRIBE t_admin; --获取表的基本字段信息
+SHOW FULL COLUMNS FROM t_admin;  --获取表的详细信息(含注释等信息)
+
 ```
-
-
 
 ### 基本数据配置
 ```
