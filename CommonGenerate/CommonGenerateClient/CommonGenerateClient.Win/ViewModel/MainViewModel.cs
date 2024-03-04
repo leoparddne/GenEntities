@@ -1,4 +1,4 @@
-﻿using CommonGenerateClient.Resource.Dto.Out;
+using CommonGenerateClient.Resource.Dto.Out;
 using CommonGenerateClient.Resource.Enums;
 using CommonGenerateClient.Resource.Models.WebAPI;
 using CommonGenerateClient.Win.Ex;
@@ -200,7 +200,8 @@ namespace CommonGenerateClient.Win.ViewModel
             {
                 return;
             }
-            foreach (var item in ret.Data)
+            var sortTableList=ret.Data.OrderBy(f => f.TableName);
+            foreach (var item in sortTableList)
             {
                 //if (string.IsNullOrEmpty(SearchTableText) || item.TableName.ToUpper().Contains(SearchTableText.ToUpper()))
                 //{
