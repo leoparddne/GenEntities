@@ -200,7 +200,8 @@ namespace CommonGenerateClient.Win.ViewModel
             {
                 return;
             }
-            foreach (var item in ret.Data)
+            var sortTableList=ret.Data.OrderBy(f => f.TableName);
+            foreach (var item in sortTableList)
             {
                 //if (string.IsNullOrEmpty(SearchTableText) || item.TableName.ToUpper().Contains(SearchTableText.ToUpper()))
                 //{
