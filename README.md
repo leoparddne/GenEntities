@@ -20,11 +20,22 @@
 主项目为CommonGenerateClient.Win，需要在配置文件【appsettings.json】中添加服务端信息，维护API字段即可。  
 如果需要添加自定义模板只需要在配置文件中Template节点中维护模板路径即可，模板为T4模板。  
 
-选择模板后将根据模板配置需要的表数量要求选择的表(z界面中显示为参数)，参数的现实依据为所选的模板类型中所有的TableParameterName去重得到。
+选择模板后将根据模板配置需要的表数量要求选择的表(界面中显示为参数)，参数的显示依据为所选的模板类型中所有的TableParameterName去重得到。
 
 需要注意模板执行方式有两种，
 1. 根据维护的模板批量执行，将多个模板维护在Template中同一个对象内部，参考现有配置文件。
 2. 单个执行指定的模板
+
+
+生成的模板内部会使用TableParameterName配置的所有表名称并在内部使用,如下，将表名称配置为
+```
+"TableParameterName": [ "ParameterName" ]
+```
+则t4模板内部获取配置的代码需要相应的将参数调整为MainTable，如下
+
+```
+InfrastructModel dataConfig=allModel["MainTable"];
+```
 
 
 部分参数
