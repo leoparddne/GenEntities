@@ -62,6 +62,11 @@ namespace CommonGenerateClient.Win.Models
         public string Path { get; set; }
 
         /// <summary>
+        /// 自动生成表同名的目录名
+        /// </summary>
+        public bool AutoDir { get; set; }
+
+        /// <summary>
         /// 模板生成后路径固定串
         /// </summary>
         public string TemplatePath { get; set; }
