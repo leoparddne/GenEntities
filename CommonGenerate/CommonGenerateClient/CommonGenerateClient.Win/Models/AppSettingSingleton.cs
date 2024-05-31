@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,6 +60,11 @@ namespace CommonGenerateClient.Win.Models
         /// 模板相对主程序路径
         /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// 自动生成表同名的目录名
+        /// </summary>
+        public bool AutoDir { get; set; }
 
         /// <summary>
         /// 模板生成后路径固定串

@@ -1,4 +1,4 @@
-﻿{
+{
   "API": "http://192.168.2.49:7040/",
   "Template": [
     {
@@ -7,6 +7,7 @@
         {
           "Name": "EntityGenerate",
           "Path": "T4s\\Api\\Common\\EntityGenerate.tt",
+          "AutoDir": true,
           "TemplatePath": "\\WebAPI\\Entities",
           "FileNameTemplate": "{0}Entity",
           "FileExt": ".cs",
@@ -55,6 +56,7 @@
         {
           "Name": "InDtoGenerate",
           "Path": "T4s\\Api\\Common\\InDtoGenerate.tt",
+          "AutoDir": true,
           "TemplatePath": "\\WebAPI\\Dto\\InDto",
           "FileNameTemplate": "{0}InDto",
           "FileExt": ".cs",
@@ -63,6 +65,7 @@
         {
           "Name": "CreateInDtoGenerate",
           "Path": "T4s\\Api\\Common\\CreateInDtoGenerate.tt",
+          "AutoDir": true,
           "TemplatePath": "\\WebAPI\\Dto\\InDto",
           "FileNameTemplate": "{0}CreateInDto",
           "FileExt": ".cs",
@@ -71,6 +74,7 @@
         {
           "Name": "SearchInDtoGenerate",
           "Path": "T4s\\Api\\Common\\SearchInDtoGenerate.tt",
+          "AutoDir": true,
           "TemplatePath": "\\WebAPI\\Dto\\InDto",
           "FileNameTemplate": "{0}SearchInDto",
           "FileExt": ".cs",
@@ -79,6 +83,7 @@
         {
           "Name": "SearchOutDtoGenerate",
           "Path": "T4s\\Api\\Common\\SearchOutDtoGenerate.tt",
+          "AutoDir": true,
           "TemplatePath": "\\WebAPI\\Dto\\OutDto",
           "FileNameTemplate": "{0}SearchOutDto",
           "FileExt": ".cs",
