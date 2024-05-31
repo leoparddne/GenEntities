@@ -651,7 +651,8 @@ namespace CommonGenerateClient.Win.ViewModel
             //var fileTemplateFinal = string.Format(generateTemplate.FileNameTemplate, entityName);
             var fileTemplateFinal = string.Format(generateTemplate.FileNameTemplate, mainEntityName);
 
-            var fileName = fileSavePath + generateTemplate.TemplatePath + "\\" + fileTemplateFinal + generateTemplate.FileExt;
+            //根据AutoDir生成表同名的子目录
+            var fileName = fileSavePath + generateTemplate.TemplatePath + (generateTemplate.AutoDir ? ("\\" + mainEntityName) : string.Empty) + "\\" + fileTemplateFinal + generateTemplate.FileExt;
             var fileInfo = new FileInfo(fileName);
             if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
             {
