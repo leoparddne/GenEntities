@@ -46,13 +46,13 @@ where
             //where pg_class.relname = 'file_bucket' and pg_constraint.contype='p'");
 
             //TODO 后续拆分
-            return SqlQuery<string>(@"select 
+            return SqlQuery<string>((@$"select 
         pg_attribute.attname 
 from pg_constraint  
 inner join pg_class on pg_constraint.conrelid = pg_class.oid 
 inner join pg_attribute on pg_attribute.attrelid = pg_class.oid and  pg_attribute.attnum = pg_constraint.conkey[1]
 inner join pg_type on pg_type.oid = pg_attribute.atttypid
-where pg_class.relname = 'file_bucket' and pg_constraint.contype='p'");
+where pg_class.relname = '{table}' and pg_constraint.contype='p'");
         }
     }
 }
