@@ -517,7 +517,9 @@ namespace CommonGenerateClient.Win.ViewModel
             //忽略字段
             var allColumns = tableFields.Select(f => f.ColumnName);
 
-            List<string> skipProperty = new List<string> { "CREATE_USER", "CREATE_TIME", "UPDATE_USER", "UPDATE_TIME" };
+            //TODO 后续添加配置可以动态控制需要跳过的表字段
+            //List<string> skipProperty = new List<string> { "CREATE_USER", "CREATE_TIME", "UPDATE_USER", "UPDATE_TIME" };
+            List<string> skipProperty = new List<string> ();
 
             //忽略未选择的字段、固定的更新字段
             var skipColumns = tableFields.Where(f => skipProperty.Contains(f.ColumnName.ToUpper()));//.Select();
