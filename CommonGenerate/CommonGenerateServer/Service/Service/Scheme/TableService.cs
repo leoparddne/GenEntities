@@ -5,6 +5,7 @@ using Infrastruct.Base.Service;
 using Infrastruct.Base.UOF;
 using Infrastruct.Ex;
 using Service.IService.Scheme;
+using SqlSugar;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -82,6 +83,50 @@ namespace Service.Service.Scheme
             }
 
             return result;
+        }
+
+
+        /// <summary>
+        /// 获取表信息
+        /// </summary>
+        /// <returns></returns>
+        private List<DbTableInfo> GetTableList(string modelID)
+        {
+            List<DbTableInfo> data = sqlSugarClient.DbMaintenance.GetTableInfoList(false);
+            if (string.IsNullOrEmpty(modelID))
+            {
+                return data;
+            }
+
+            var result = data.Where(f => f.Name.Contains(modelID)).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// 获取视图信息
+        /// </summary>
+        /// <returns></returns>
+        private List<DbTableInfo> GetViewInfoList(string modelID)
+        {
+            var data = sqlSugarClient.DbMaintenance.GetViewInfoList(false);
+            if (string.IsNullOrEmpty(modelID))
+            {
+                return data;
+            }
+
+            var result = data.Where(f => f.Name.Contains(modelID)).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// 获取表的字段信息
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        private List<DbColumnInfo> GetFieldInfoList(string tableName)
+        {
+            List<DbColumnInfo> data = sqlSugarClient.DbMaintenance.GetColumnInfosByTableName(tableName, false);
+            return data;
         }
     }
 }

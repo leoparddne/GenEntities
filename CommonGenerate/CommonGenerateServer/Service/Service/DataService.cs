@@ -13,12 +13,12 @@ namespace Service.Service
     public class DataService : IDataService
     {
 
-        ITableService mysqlTableService;
+        ITableService tableService;
 
 
         public DataService(ITableService mysqlTableService)
         {
-            this.mysqlTableService = mysqlTableService;
+            this.tableService = mysqlTableService;
         }
 
         public UserTabCommentsEntity GetByName(string dataName, string configID)
@@ -41,7 +41,7 @@ namespace Service.Service
             switch (dbType)
             {
                 case DbType.MySql:
-                    return mysqlTableService.GetByName(dataName, configID);
+                    return tableService.GetByName(dataName, configID);
                     break;
                 case DbType.SqlServer:
                     break;
@@ -84,7 +84,7 @@ namespace Service.Service
             switch (dbType)
             {
                 case DbType.MySql:
-                    return mysqlTableService.GetDataDetail(table, configID);
+                    return tableService.GetDataDetail(table, configID);
                     break;
                 case DbType.SqlServer:
                     break;
@@ -120,12 +120,14 @@ namespace Service.Service
                 return new List<UserTabCommentsEntity>();
             }
 
+
+
             //switch (DBTypeService.GetDBType())
             var dbType = SqlSugarCollectionExtension.GetDBType(config);
             switch (dbType)
             {
                 case DbType.MySql:
-                    return mysqlTableService.GetList(configID);
+                    return tableService.GetList(configID);
                     break;
                 case DbType.SqlServer:
                     break;
