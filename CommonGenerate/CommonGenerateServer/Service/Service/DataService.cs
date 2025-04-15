@@ -84,7 +84,7 @@ namespace Service.Service
             switch (dbType)
             {
                 case DbType.MySql:
-                    return tableService.GetDataDetail(table, configID);
+                    return tableService.GetColumnInfo(table, configID);
                     break;
                 case DbType.SqlServer:
                     break;

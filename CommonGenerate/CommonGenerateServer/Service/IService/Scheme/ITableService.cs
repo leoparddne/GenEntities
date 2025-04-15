@@ -8,7 +8,7 @@ namespace Service.IService.Scheme
     public interface ITableService: IBaseService
     {
         UserTabCommentsEntity GetByName(string dataName, string configID);
-        IList<UserTabColumnOutDto> GetDataDetail(string table, string configID);
+        IList<UserTabColumnOutDto> GetColumnInfo(string table, string configID);
         List<UserTabCommentsEntity> GetTableList(string configID);
     }
 }

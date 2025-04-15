@@ -35,10 +35,10 @@ namespace Service.Service.Scheme
             };
         }
 
-        public IList<UserTabColumnOutDto> GetDataDetail(string table, string configID)
+        public IList<UserTabColumnOutDto> GetColumnInfo(string table, string configID)
         {
             ChangeDB(configID);
-            var fieldList = SqlQuery<MySqlTableFieldEntity>($"SHOW FULL COLUMNS FROM {table};");
+            var fieldList = GetFieldInfoList(table);
             if (fieldList.IsNullOrEmpty())
             {
                 return null;
@@ -49,12 +49,12 @@ namespace Service.Service.Scheme
             {
                 result.Add(new UserTabColumnOutDto
                 {
-                    ColumnName = field.Field,
-                    Comment = field.Comment,
-                    DataDefault = field.Default,
-                    DataType = field.Type,
-                    ISPrimaryKey = field.Key == "PRI",
-                    Nullable = field.Null == "NO" ? "N" : "Y",
+                    ColumnName = field.DbColumnName,
+                    Comment = field.ColumnDescription,
+                    DataDefault = field.DefaultValue,
+                    DataType = field.DataType.ToString(),
+                    ISPrimaryKey = field.IsPrimarykey,
+                    Nullable = field.IsNullable?"Y":"N"
                 });
             }
 
@@ -96,7 +96,7 @@ namespace Service.Service.Scheme
         /// 获取表信息
         /// </summary>
         /// <returns></returns>
-        private List<DbTableInfo> GetTableList(string modelID)
+        private List<DbTableInfo> GetTableListInfo(string modelID)
         {
             List<DbTableInfo> data = GetAllTable();
             if (string.IsNullOrEmpty(modelID))
