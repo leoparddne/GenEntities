@@ -61,10 +61,10 @@ namespace Service.Service.Scheme
             return result;
         }
 
-        public List<UserTabCommentsEntity> GetList(string configID)
+        public List<UserTabCommentsEntity> GetTableList(string configID)
         {
             ChangeDB(configID);
-            var tableList = SqlQuery<MySqlTableEntity>("show table status;");
+            var tableList = GetAllTable();
 
             if (tableList.IsNullOrEmpty())
             {
@@ -76,13 +76,19 @@ namespace Service.Service.Scheme
             {
                 result.Add(new UserTabCommentsEntity
                 {
-                    Comments = table.Comment,
+                    Comments = table.Description,
                     TableName = table.Name,
                     TableType = string.Empty
                 });
             }
 
             return result;
+        }
+
+        public List<DbTableInfo> GetAllTable()
+        {
+            List<DbTableInfo> data = sqlSugarClient.DbMaintenance.GetTableInfoList(false);
+            return data;
         }
 
 
@@ -92,7 +98,7 @@ namespace Service.Service.Scheme
         /// <returns></returns>
         private List<DbTableInfo> GetTableList(string modelID)
         {
-            List<DbTableInfo> data = sqlSugarClient.DbMaintenance.GetTableInfoList(false);
+            List<DbTableInfo> data = GetAllTable();
             if (string.IsNullOrEmpty(modelID))
             {
                 return data;
