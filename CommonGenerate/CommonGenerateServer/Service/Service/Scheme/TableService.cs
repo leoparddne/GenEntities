@@ -17,10 +17,10 @@ namespace Service.Service.Scheme
         {
         }
 
-        public UserTabCommentsEntity GetByName(string dataName, string configID)
+        public UserTabCommentsEntity GetTableByName(string dataName, string configID)
         {
             ChangeDB(configID);
-            var fieldList = SqlQuery<MySqlTableEntity>($"show table status where Name= '{dataName}';");
+            var fieldList = GetAllTable()?.Where(f => f.Name == dataName)?.ToList();
             if (fieldList.IsNullOrEmpty())
             {
                 return null;
@@ -29,7 +29,7 @@ namespace Service.Service.Scheme
 
             return new UserTabCommentsEntity
             {
-                Comments = data.Comment,
+                Comments = data.Description,
                 TableName = data.Name,
                 TableType = string.Empty
             };
@@ -54,7 +54,7 @@ namespace Service.Service.Scheme
                     DataDefault = field.DefaultValue,
                     DataType = field.DataType.ToString(),
                     ISPrimaryKey = field.IsPrimarykey,
-                    Nullable = field.IsNullable?"Y":"N"
+                    Nullable = field.IsNullable ? "Y" : "N"
                 });
             }
 
