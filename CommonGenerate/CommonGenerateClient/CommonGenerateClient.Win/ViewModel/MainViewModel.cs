@@ -1,4 +1,4 @@
-﻿using CommonGenerateClient.Resource.Dto.Out;
+using CommonGenerateClient.Resource.Dto.Out;
 using CommonGenerateClient.Resource.Enums;
 using CommonGenerateClient.Resource.Models.WebAPI;
 using CommonGenerateClient.Win.Ex;

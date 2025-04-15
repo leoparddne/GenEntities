@@ -1,4 +1,4 @@
-﻿using Domain.DTO;
+using Domain.DTO;
 using Infrastruct.Base.Service;
 using Infrastruct.Base.UOF;
 using Service.IService.Scheme.Postgre;
@@ -46,7 +46,7 @@ where
             //where pg_class.relname = 'file_bucket' and pg_constraint.contype='p'");
 
             //TODO 后续拆分
-            return SqlQuery<string>((@$"select 
+            return SqlQuery<string>(@$"select 
         pg_attribute.attname 
 from pg_constraint  
 inner join pg_class on pg_constraint.conrelid = pg_class.oid 
