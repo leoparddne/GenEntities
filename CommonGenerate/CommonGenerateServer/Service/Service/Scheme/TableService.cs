@@ -4,15 +4,15 @@ using Domain.DTO;
 using Infrastruct.Base.Service;
 using Infrastruct.Base.UOF;
 using Infrastruct.Ex;
-using Service.IService.Scheme.MySql;
+using Service.IService.Scheme;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Service.Service.Scheme.MySql
+namespace Service.Service.Scheme
 {
-    public class MySqlTableService : BaseService, IMysqlTableService
+    public class TableService : BaseService, ITableService
     {
-        public MySqlTableService(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public TableService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
 

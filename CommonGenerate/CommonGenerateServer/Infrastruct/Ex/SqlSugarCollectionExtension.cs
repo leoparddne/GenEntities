@@ -1,9 +1,9 @@
-﻿using SqlSugar;
+﻿using Infrastruct.Config;
+using Microsoft.Extensions.DependencyInjection;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Infrastruct.Config;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastruct.Ex
 {

@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc;
+using Server.WebAPI.Attr;
 using Server.WebAPI.Model;
 using System;
 using System.Linq;
-using Server.WebAPI.Attr;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Server.WebAPI.Ex
 {

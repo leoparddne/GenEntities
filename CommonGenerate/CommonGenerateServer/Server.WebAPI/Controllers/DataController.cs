@@ -1,11 +1,11 @@
 ﻿using Domain.DBScheme.Oracle;
 using Domain.DTO;
+using Infrastruct.Config;
+using Infrastruct.Ex;
 using Microsoft.AspNetCore.Mvc;
+using Service.IService;
 using System.Collections.Generic;
 using System.Linq;
-using Infrastruct.Ex;
-using Service.IService;
-using Infrastruct.Config;
 
 namespace Server.WebAPI.Controllers
 {/// <summary>
