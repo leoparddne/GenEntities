@@ -121,7 +121,6 @@ namespace CommonGenerateClient.Win.ViewModel
         ///// 前缀
         ///// </summary>
         //public string TxtPrefix { get; set; }
-        public string BaseURL { get; }
 
 
         //打开的数据库
@@ -187,14 +186,6 @@ namespace CommonGenerateClient.Win.ViewModel
 
                 SelectTemplate = TemplateList.First();
             }
-
-            var apiBaseURL = AppSettingSingleton.Instance.API;
-            if (apiBaseURL == null)
-            {
-                MessageBox.Show("config can not fetch");
-                return;
-            }
-            BaseURL = apiBaseURL;// "http://192.168.2.49:7013/";
 
             Load();
 
