@@ -1,5 +1,4 @@
-﻿using Domain.DBScheme.MySql;
-using Domain.DBScheme.Oracle;
+﻿using Domain.DBScheme.Oracle;
 using Domain.DTO;
 using Infrastruct.Base.Service;
 using Infrastruct.Base.UOF;
@@ -7,7 +6,6 @@ using Infrastruct.Ex;
 using Service.IService.Scheme;
 using SqlSugar;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Service.Service.Scheme
 {
@@ -15,24 +13,6 @@ namespace Service.Service.Scheme
     {
         public TableService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-        }
-
-        public UserTabCommentsEntity GetTableByName(string dataName, string configID)
-        {
-            ChangeDB(configID);
-            var fieldList = GetAllTable()?.Where(f => f.Name == dataName)?.ToList();
-            if (fieldList.IsNullOrEmpty())
-            {
-                return null;
-            }
-            var data = fieldList.First();
-
-            return new UserTabCommentsEntity
-            {
-                Comments = data.Description,
-                TableName = data.Name,
-                TableType = string.Empty
-            };
         }
 
         public IList<UserTabColumnOutDto> GetColumnInfo(string table, string configID)
@@ -64,7 +44,7 @@ namespace Service.Service.Scheme
         public List<UserTabCommentsEntity> GetTableList(string configID)
         {
             ChangeDB(configID);
-            var tableList = GetAllTable();
+            var tableList = sqlSugarClient.DbMaintenance.GetTableInfoList(false);
 
             if (tableList.IsNullOrEmpty())
             {
@@ -78,49 +58,24 @@ namespace Service.Service.Scheme
                 {
                     Comments = table.Description,
                     TableName = table.Name,
-                    TableType = string.Empty
+                    TableType = "TABLE"
                 });
             }
 
-            return result;
-        }
-
-        public List<DbTableInfo> GetAllTable()
-        {
-            List<DbTableInfo> data = sqlSugarClient.DbMaintenance.GetTableInfoList(false);
-            return data;
-        }
-
-
-        /// <summary>
-        /// 获取表信息
-        /// </summary>
-        /// <returns></returns>
-        private List<DbTableInfo> GetTableListInfo(string modelID)
-        {
-            List<DbTableInfo> data = GetAllTable();
-            if (string.IsNullOrEmpty(modelID))
+            var viewList = sqlSugarClient.DbMaintenance.GetViewInfoList(false);
+            if (!viewList.IsNullOrEmpty())
             {
-                return data;
+                foreach (var view in viewList)
+                {
+                    result.Add(new UserTabCommentsEntity
+                    {
+                        Comments = view.Description,
+                        TableName = view.Name,
+                        TableType = "VIEW"
+                    });
+                }
             }
 
-            var result = data.Where(f => f.Name.Contains(modelID)).ToList();
-            return result;
-        }
-
-        /// <summary>
-        /// 获取视图信息
-        /// </summary>
-        /// <returns></returns>
-        private List<DbTableInfo> GetViewInfoList(string modelID)
-        {
-            var data = sqlSugarClient.DbMaintenance.GetViewInfoList(false);
-            if (string.IsNullOrEmpty(modelID))
-            {
-                return data;
-            }
-
-            var result = data.Where(f => f.Name.Contains(modelID)).ToList();
             return result;
         }
 
