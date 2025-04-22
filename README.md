@@ -8,16 +8,27 @@
 3.  ~~OracleGenerate(旧项目)~~ - 读取oracle中的表自动生成实体 -读取oracle基表
 
 
-### CommonGenerate
-分为服务端和客户端，服务端解析数据库、表字段等信息，客户端负责生成逻辑，可以在客户端通过添加T4模板文件的方式新增生成模板。
+### CommonGenerate 
+选择数据库、模板及操作的表后自动根据模板生成对应的代码文件。  
+模板使用T4模板，将表结构生成在临时文件中传递给T4模板，T4模板内部可以获取到表信息、字段信息并根据实际情况生成对应的代码文件。  
+目前提供的方法如下
+* 驼峰
+* 表注释
+* 字段注释
+* 字段类型
+* 是否主键
+* 是否允许为空
 ![image](./img//CommonGenerate_main.png)
 
-#### 服务端 - CommonGenerateServer
+#### 配置文件(DBConfig.json)
+配置连接的数据库，后续优化为配置界面。 
+
+#### 模板文件(appsettings.json)
 主项目为Server.WebAPI，需要在配置文件【appsettings.json】中添加数据库信息，可参考现有配置添加  
 
 
 #### 客户端 - CommonGenerateClient
-主项目为CommonGenerateClient.Win，需要在配置文件【appsettings.json】中添加服务端信息，维护API字段即可。  
+主项目为CommonGenerateClient.Win，需要在配置文件【appsettings.json】中维护模板。  
 如果需要添加自定义模板只需要在配置文件中Template节点中维护模板路径即可，模板为T4模板。  
 
 选择模板后将根据模板配置需要的表数量要求选择的表(界面中显示为参数)，参数的显示依据为所选的模板类型中所有的TableParameterName去重得到。
