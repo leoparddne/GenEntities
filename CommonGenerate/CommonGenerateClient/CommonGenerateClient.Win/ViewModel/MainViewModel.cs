@@ -123,14 +123,28 @@ namespace CommonGenerateClient.Win.ViewModel
         //public string TxtPrefix { get; set; }
         public string BaseURL { get; }
 
+
+        //打开的数据库
+        private DBHelper dbHelper;
+
+
         private async void LoadTable(SelectTypeModel value)
         {
             if (value == null)
             {
                 return;
             }
+
+            var selectDB = DBConfigSingleton.Instance.DBConfig.FirstOrDefault(f => f.ConfigID == SelectDB.Value);
+            if (selectDB == null)
+            {
+                HandyControl.Controls.Growl.Warning("请选择数据库.");
+                return;
+            }
+            dbHelper = new DBHelper(selectDB.ConnectionType, selectDB.ConnectionString);
+
             //获取数据库类型
-            DBType = dbHelper.DBType.ToString();
+            DBType = selectDB.ConnectionType.ToString();
 
             //获取数据库下的所有表
             var rawTableList = dbHelper.GetTableList();
@@ -261,9 +275,6 @@ namespace CommonGenerateClient.Win.ViewModel
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
-        //打开的数据库
-        private DBHelper dbHelper = new DBHelper(SqlSugar.DbType.PostgreSQL, "Host=192.168.2.49;Username=postgres;Password=mesadmin;Database=REPORT_WORK;");
 
         /// <summary>
         /// 加载数据库列表

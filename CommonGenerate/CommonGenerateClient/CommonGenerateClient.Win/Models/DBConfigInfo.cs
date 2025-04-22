@@ -1,4 +1,6 @@
-﻿namespace CommonGenerateClient.Win.Models
+﻿using SqlSugar;
+
+namespace CommonGenerateClient.Win.Models
 {
     public class DBConfigInfo
     {
@@ -6,6 +8,6 @@
 
         public string ConnectionString { get; set; }
 
-        public string ConnectionType { get; set; }
+        public DbType ConnectionType { get; set; }
     }
 }
