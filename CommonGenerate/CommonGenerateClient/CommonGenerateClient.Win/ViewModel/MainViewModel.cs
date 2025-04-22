@@ -347,14 +347,11 @@ namespace CommonGenerateClient.Win.ViewModel
                 string entityName = CamelCaseUtility.Convert2Camel(formatTableName);
                 dataSource.EntityName = entityName;
 
-                var tableData = await HttpHelper.GetAsync<CommonDto<UserTabCommentsOutDto>>(BaseURL + $"api/Data/GetDataInfo?dataName={tableName}&configID={SelectDB.Value}", null, null, 60 * 1000);
-                UserTabCommentsOutDto? table = tableData.Data;
+                UserTabCommentsOutDto? table = dbHelper.GetTableByName(tableName);
 
                 dataSource.TableInfo = table;
 
-
-                var tableFieldsData = await HttpHelper.GetAsync<CommonDto<List<UserTabColumnOutDto>>>(BaseURL + $"api/Data/GetDataDetail?table={tableName}&configID={SelectDB.Value}", null, null, 60 * 1000);
-                List<UserTabColumnOutDto> tableFields = tableFieldsData.Data;
+                List<UserTabColumnOutDto> tableFields = dbHelper.GetColumnInfo(tableName)?.ToList();
 
                 dataSource.TableFields = tableFields;
             }
