@@ -41,6 +41,31 @@ namespace Service.Service.Scheme
             return result;
         }
 
+        /// <summary>
+        /// 根据表名获取表信息
+        /// </summary>
+        /// <param name="dataName"></param>
+        /// <param name="configID"></param>
+        /// <returns></returns>
+        public UserTabCommentsEntity GetTableByName(string dataName, string configID)
+        {
+            var allTableList = GetTableList(configID);
+            if (allTableList.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            foreach (var table in allTableList)
+            {
+                if (table.TableName == dataName)
+                {
+                    return table;
+                }
+            }
+
+            return null;
+        }
+
         public List<UserTabCommentsEntity> GetTableList(string configID)
         {
             ChangeDB(configID);

@@ -20,6 +20,24 @@ namespace Service.Service
             this.tableService = mysqlTableService;
         }
 
+
+        public UserTabCommentsEntity GetByName(string dataName, string configID)
+        {
+            var configList = DBConfigMutiSingleton.GetConfig();
+            if (configList.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var config = configList.FirstOrDefault(f => f.ConfigID == configID);
+            if (config == null)
+            {
+                return null;
+            }
+
+            return tableService.GetTableByName(dataName, configID);
+        }
+
         public IList<UserTabColumnOutDto> GetTableFieldList(string table, string configID)
         {
             var configList = DBConfigMutiSingleton.GetConfig();

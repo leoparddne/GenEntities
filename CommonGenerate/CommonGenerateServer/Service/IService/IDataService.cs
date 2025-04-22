@@ -8,5 +8,6 @@ namespace Service.IService
     {
         List<UserTabCommentsEntity> GetTableList(string configID);
         IList<UserTabColumnOutDto> GetTableFieldList(string table, string configID);
+        UserTabCommentsEntity GetByName(string dataName, string configID);
     }
 }

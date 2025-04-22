@@ -34,6 +34,15 @@ namespace Server.WebAPI.Controllers
             return dataService.GetTableList(configID);
         }
 
+        /// <summary>
+        /// 获取数据源信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public UserTabCommentsEntity GetDataInfo(string dataName, string configID)
+        {
+            return dataService.GetByName(dataName, configID);
+        }
 
         /// <summary>
         /// 获取详情 后续扩展为根据id获取其他唯一字段获取
