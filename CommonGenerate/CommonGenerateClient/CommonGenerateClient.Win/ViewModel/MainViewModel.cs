@@ -35,12 +35,6 @@ namespace CommonGenerateClient.Win.ViewModel
         /// </summary>
         public ObservableCollection<SelectTypeModel> DataSourceList { get; set; } = new ObservableCollection<SelectTypeModel>();
 
-
-        /// <summary>
-        /// 原始的所有表
-        /// </summary>
-        //public ObservableCollection<SelectTypeModel> FilterDataSourceList { get; set; } = new ObservableCollection<SelectTypeModel>();
-
         /// <summary>
         /// 数据库
         /// </summary>
@@ -107,19 +101,6 @@ namespace CommonGenerateClient.Win.ViewModel
             set { isBatchGenerateMode = value; LoadParameterMapper(); }
         }
 
-
-        //private SelectTypeModel selectModel;
-
-        ///// <summary>
-        ///// 选中的数据
-        ///// </summary>
-        //public SelectTypeModel SelectModel
-        //{
-        //    get { return selectModel; }
-        //    set { selectModel = value; LoadParameterMapper(); }
-        //}
-
-
         /// <summary>
         /// 选择的所有表 - 多表逻辑下使用
         /// </summary>
@@ -141,40 +122,6 @@ namespace CommonGenerateClient.Win.ViewModel
         //public string TxtPrefix { get; set; }
         public string BaseURL { get; }
 
-        //private string searchTableText;
-        ///// <summary>
-        ///// 搜索表名
-        ///// </summary>
-        //public string SearchTableText
-        //{
-        //    get { return searchTableText; }
-        //    set
-        //    {
-        //searchTableText = value;
-
-        //FilterTableCale(value);
-        //    }
-        //}
-
-        //private void FilterTableCale(string text)
-        //{
-        //    var searchFinalText = text.ToUpper();
-        //    if (string.IsNullOrEmpty(searchFinalText))
-        //    {
-        //        FilterDataSourceList = new ObservableCollection<SelectTypeModel>(DataSourceList.Take(10));
-        //    }
-        //    else
-        //    {
-        //        var addData = DataSourceList.Where(f => f.Label.ToUpper().Contains(searchFinalText))?.ToList();
-
-        //        if (!addData.IsNullOrEmpty())
-        //        {
-        //            FilterDataSourceList = new ObservableCollection<SelectTypeModel>(addData.Take(10));
-        //        }
-        //    }
-        //}
-
-
         private async void LoadTable(SelectTypeModel value)
         {
             if (value == null)
@@ -195,7 +142,7 @@ namespace CommonGenerateClient.Win.ViewModel
             var ret = await HttpHelper.GetAsync<CommonDto<List<TableModel>>>(BaseURL + $"api/Data/GetList?configID={value.Value}", null, null, 10 * 1000);
 
             DataSourceList.Clear();
-            //FilterDataSourceList.Clear();
+
             if (ret.Data.IsNullOrEmpty())
             {
                 return;
@@ -203,10 +150,6 @@ namespace CommonGenerateClient.Win.ViewModel
             var sortTableList=ret.Data.OrderBy(f => f.TableName);
             foreach (var item in sortTableList)
             {
-                //if (string.IsNullOrEmpty(SearchTableText) || item.TableName.ToUpper().Contains(SearchTableText.ToUpper()))
-                //{
-                //    FilterDataSourceList.Add(new SelectTypeModel { Value = item.TableType, Label = item.TableName, Name = item.Comments });
-                //}
                 DataSourceList.Add(new SelectTypeModel { Value = item.TableType, Label = item.TableName, Name = item.Comments });
             }
         }
@@ -246,25 +189,6 @@ namespace CommonGenerateClient.Win.ViewModel
 
             Load();
 
-            //TableSelctedCommand = new CommandBase(l =>
-            //{
-            //    if (l is SelectTypeModel typeModel)
-            //    {
-            //        SelectModel = DataSourceList.FirstOrDefault(f => f.Label == typeModel.Label);
-            //        if (SelectModel != null && !string.IsNullOrWhiteSpace(SelectModel.Value))
-            //        {
-            //            var split = SelectModel.Label.Split('_');
-            //            if (split.Count() > 1)
-            //            {
-            //                TxtPrefix = split.FirstOrDefault() + "_";
-            //            }
-            //            else
-            //            {
-            //                TxtPrefix = string.Empty;
-            //            }
-            //        }
-            //    }
-            //});
             GenerateCommand = new CommandBase(l =>
             {
                 if (SelectDB == null)
@@ -306,9 +230,7 @@ namespace CommonGenerateClient.Win.ViewModel
                 System.Windows.Forms.FolderBrowserDialog folderBrowser = new();
                 if (folderBrowser.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                     return;
-                //fun.SavePath = folderBrowser.SelectedPath;
 
-                //"T_BD_PART"
                 Task.Run(async () =>
                 {
                     var tableInfoListTask = GetTemplateTableInfo("Generate");
@@ -474,9 +396,6 @@ namespace CommonGenerateClient.Win.ViewModel
                 allParameterModel.Add(dataSource.T4ParameterName, infrastructModel);
             }
 
-            //var infrastructDir = ResourceHelper.GetDir("\\"+GUIDHelper.NewGuid +"-"+ ResourceHelper.TempInfrastructPath);
-
-            //var infrastructDir = "\\" + GUIDHelper.NewGuid + "-" + ResourceHelper.TempInfrastructPath;
             var infrastructDir = "\\" + ResourceHelper.TempInfrastructPath;
 
             ResourceHelper.SaveInfrastructDataSource(infrastructDir, allParameterModel);
@@ -578,24 +497,6 @@ namespace CommonGenerateClient.Win.ViewModel
 
             //参数传递
             host.Session = new TextTemplatingSession();
-
-            ////TODO - tableParameterDic
-            ////host.Session.Add("ParameterName", base64Path);
-            ////批量生成多个参数信息
-            //foreach (var item in generateTemplate.TableParameterName)
-            //{
-            //    //获取对应的数据
-            //    var tableInfo = tableInfoList.FirstOrDefault(f => f.T4ParameterName == item);
-            //    if (tableInfo == null)
-            //    {
-            //        //TODO - 
-            //    }
-            //    var tableInfoBase64FilePath = GenerateT4TableParameterFilePath(tableInfo, apiNameSpace, savePath);
-            //    tableInfoBase64FilePath.Wait();
-            //    //tableParameterDic.Add(item, tableInfoFile);
-            //    //host.Session.Add("ParameterName", base64Path);
-            //    host.Session.Add(item, tableInfoBase64FilePath.Result);
-            //}
 
             //TODO - 使用批量逻辑优化
             var tableInfoBase64FilePath = GenerateT4TableParameterFilePath(tableInfoList, apiNameSpace, savePath);
