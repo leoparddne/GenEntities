@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonGenerateClient.Resource\CommonGenerateClient.Resource.csproj" />
+    <ProjectReference Include="..\DBConnecter\DBConnecter.csproj" />
     <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>
 

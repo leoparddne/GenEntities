@@ -5,6 +5,7 @@ using CommonGenerateClient.Win.Ex;
 using CommonGenerateClient.Win.Helpers;
 using CommonGenerateClient.Win.Models;
 using CommonGenerateClient.Win.T4s;
+using DBConnecter;
 using HandyControl.Controls;
 using Microsoft.VisualStudio.TextTemplating;
 using System;
@@ -147,7 +148,7 @@ namespace CommonGenerateClient.Win.ViewModel
             {
                 return;
             }
-            var sortTableList=ret.Data.OrderBy(f => f.TableName);
+            var sortTableList = ret.Data.OrderBy(f => f.TableName);
             foreach (var item in sortTableList)
             {
                 DataSourceList.Add(new SelectTypeModel { Value = item.TableType, Label = item.TableName, Name = item.Comments });
@@ -267,16 +268,28 @@ namespace CommonGenerateClient.Win.ViewModel
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        //打开的数据库
+        private DBHelper dbHelper = new DBHelper(SqlSugar.DbType.PostgreSQL, "Host=192.168.2.49;Username=postgres;Password=mesadmin;Database=REPORT_WORK;");
+
         private async void Load()
         {
             try
             {
                 //获取数据库列表
-                var dbList = await HttpHelper.GetAsync<CommonDto<ObservableCollection<SelectTypeModel>>>(BaseURL + "api/Data/GetDBSourceSelect", null, null, 10 * 1000);
-                if (dbList != null)
+                var rawTableList = dbHelper.GetTableList();
+
+                if (rawTableList == null || rawTableList.Count == 0)
                 {
-                    DBSourceList = dbList.Data;
+                    return;
                 }
+
+                var tableList = new List<SelectTypeModel>();
+                foreach (var item in rawTableList)
+                {
+                    tableList.Add(new SelectTypeModel { Value = item.TableName, Label = item.TableName, Name = item.TableName });
+                }
+
+                DBSourceList = new(tableList);
             }
             catch (Exception e)
             {
@@ -438,7 +451,7 @@ namespace CommonGenerateClient.Win.ViewModel
 
             //TODO 后续添加配置可以动态控制需要跳过的表字段
             //List<string> skipProperty = new List<string> { "CREATE_USER", "CREATE_TIME", "UPDATE_USER", "UPDATE_TIME" };
-            List<string> skipProperty = new List<string> ();
+            List<string> skipProperty = new List<string>();
 
             //忽略未选择的字段、固定的更新字段
             var skipColumns = tableFields.Where(f => skipProperty.Contains(f.ColumnName.ToUpper()));//.Select();
