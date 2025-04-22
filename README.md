@@ -2,7 +2,7 @@
 
 提供的项目  
 
-0. CommonGenerate - ***最新版本的生成工具***，底层支持跨数据库，暂时适配了oracle、postgresql，基于.netcore，使用了动态的T4执行方案，不依赖vs环境
+0. CommonGenerate - ***最新版本的生成工具***，底层支持跨数据库，使用sqlSugar适配主流数据库(暂时测试了oracle、postgresql)。基于.netcore，使用了动态的T4执行方案，不依赖vs环境
 1.  ~~AutoInfrastructGenerate(旧项目)~~ - 提供基础生成实体(实体基础结构-不读取数据库-可手动扩展读取特定数据库实体类型)、仓储 -T4模板
 2.  ~~GenEntities-Mysql(旧项目)~~ - 读取mysql中的表自动生成实体及仓储
 3.  ~~OracleGenerate(旧项目)~~ - 读取oracle中的表自动生成实体 -读取oracle基表
@@ -13,7 +13,7 @@
 ![image](./img//CommonGenerate_main.png)
 
 #### 服务端 - CommonGenerateServer
-主项目为Server.WebAPI，需要在配置文件【appsettings.json】中添加数据库信息，可参考现有配置添加
+主项目为Server.WebAPI，需要在配置文件【appsettings.json】中添加数据库信息，可参考现有配置添加  
 
 
 #### 客户端 - CommonGenerateClient
@@ -27,18 +27,20 @@
 2. 单个执行指定的模板
 
 
-生成的模板内部会使用TableParameterName配置的所有表名称并在内部使用,如下，将表名称配置为
+生成的模板内部会使用TableParameterName配置的所有表名称并在内部使用,如下，将表名称配置为MainTable
 ```
-"TableParameterName": [ "ParameterName" ]
+"TableParameterName": [ "MainTable" ]
 ```
-则t4模板内部获取配置的代码需要相应的将参数调整为MainTable，如下
+t4模板内部获取配置的代码需要相应的将参数调整为MainTable，如下
 
 ```
 InfrastructModel dataConfig=allModel["MainTable"];
 ```
 
+可以同时配置多个表，在模板内部使用不同的表别名即可获取对应的表信息。
 
-部分参数
+
+部分参数说明
 ```
 {
   "Name": "EntityGenerate", //模板名称
@@ -46,7 +48,7 @@ InfrastructModel dataConfig=allModel["MainTable"];
   "TemplatePath": "\\WebAPI\\Entities",//生成后的模板路径(多个模板可以分别生成在不同路径，生成路径的基础路径为生成时手动选择，随后在选择的目录中再生成配置的子目录再将生成后的模板内容存放到这个子目录)
   "FileNameTemplate": "{0}Entity",//生成的文件名称
   "FileExt": ".cs",//生成的文件后缀名
-  "TableParameterName": [ "ParameterName" ]//需要的表参数名称，无具体意义仅做标识，同一个参数名代表同一个选择的表
+  "TableParameterName": [ "MainTable" ]//需要的表参数名称，无具体意义仅做标识，同一个参数名代表同一个选择的表
 }
 ```
 
