@@ -24,28 +24,14 @@ namespace Server.WebAPI.Controllers
             this.dataService = dataService;
         }
 
-
-
         /// <summary>
         /// 获取数据源下的数据列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        //TODO 后续需要扩展根据数据源获取数据源下的所有数据
         public List<UserTabCommentsEntity> GetList(string configID)
         {
-            return dataService.GetList(configID);
-        }
-
-        /// <summary>
-        /// 获取数据源信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        //TODO 后续需要扩展根据数据源获取数据源下的所有数据
-        public UserTabCommentsEntity GetDataInfo(string dataName, string configID)
-        {
-            return dataService.GetByName(dataName, configID);
+            return dataService.GetTableList(configID);
         }
 
 
@@ -57,7 +43,7 @@ namespace Server.WebAPI.Controllers
         [HttpGet]
         public IList<UserTabColumnOutDto> GetDataDetail(string table, string configID)
         {
-            return dataService.GetDataDetail(table, configID);
+            return dataService.GetTableFieldList(table, configID);
         }
 
         //[AllowAnonymous]
@@ -77,17 +63,6 @@ namespace Server.WebAPI.Controllers
             }
 
             return config.ConnectionType;
-
-            ////switch (DBTypeService.GetDBType())
-            //var dbType = SqlSugarCollectionExtension.GetDBType(config);
-
-
-            //var setting = AppSettingsHelper.GetSetting("ConnectionType");
-            //if (string.IsNullOrEmpty(setting))
-            //{
-            //    return "Oracle";
-            //}
-            //return setting;
         }
 
         /// <summary>

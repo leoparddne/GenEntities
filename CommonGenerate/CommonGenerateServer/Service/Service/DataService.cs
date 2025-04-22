@@ -15,13 +15,12 @@ namespace Service.Service
 
         ITableService tableService;
 
-
         public DataService(ITableService mysqlTableService)
         {
             this.tableService = mysqlTableService;
         }
 
-        public UserTabCommentsEntity GetByName(string dataName, string configID)
+        public IList<UserTabColumnOutDto> GetTableFieldList(string table, string configID)
         {
             var configList = DBConfigMutiSingleton.GetConfig();
             if (configList.IsNullOrEmpty())
@@ -35,78 +34,11 @@ namespace Service.Service
                 return null;
             }
 
-            //switch (DBTypeService.GetDBType())
-            var dbType = SqlSugarCollectionExtension.GetDBType(config);
-
-            switch (dbType)
-            {
-                case DbType.MySql:
-                    return tableService.GetTableByName(dataName, configID);
-                    break;
-                case DbType.SqlServer:
-                    break;
-                case DbType.Sqlite:
-                    break;
-                case DbType.Oracle:
-                    break;
-                case DbType.PostgreSQL:
-                    break;
-                case DbType.Dm:
-                    break;
-                case DbType.Kdbndp:
-                    break;
-                case DbType.Oscar:
-                    break;
-                default:
-                    break;
-            }
-
-            return null;
-        }
-
-        public IList<UserTabColumnOutDto> GetDataDetail(string table, string configID)
-        {
-            var configList = DBConfigMutiSingleton.GetConfig();
-            if (configList.IsNullOrEmpty())
-            {
-                return null;
-            }
-
-            var config = configList.FirstOrDefault(f => f.ConfigID == configID);
-            if (config == null)
-            {
-                return null;
-            }
-
-            //switch (DBTypeService.GetDBType())
-            var dbType = SqlSugarCollectionExtension.GetDBType(config);
-
-            switch (dbType)
-            {
-                case DbType.MySql:
-                    return tableService.GetColumnInfo(table, configID);
-                    break;
-                case DbType.SqlServer:
-                    break;
-                case DbType.Sqlite:
-                    break;
-                case DbType.Oracle:
-                    break;
-                case DbType.PostgreSQL:
-                    break;
-                case DbType.Dm:
-                    break;
-                case DbType.Kdbndp:
-                    break;
-                case DbType.Oscar:
-                    break;
-            }
-
-            return null;
+            return tableService.GetColumnInfo(table, configID);
         }
 
 
-        public List<UserTabCommentsEntity> GetList(string configID)
+        public List<UserTabCommentsEntity> GetTableList(string configID)
         {
             var configList = DBConfigMutiSingleton.GetConfig();
             if (configList.IsNullOrEmpty())
@@ -120,34 +52,7 @@ namespace Service.Service
                 return new List<UserTabCommentsEntity>();
             }
 
-
-
-            //switch (DBTypeService.GetDBType())
-            var dbType = SqlSugarCollectionExtension.GetDBType(config);
-            switch (dbType)
-            {
-                case DbType.MySql:
-                    return tableService.GetTableList(configID);
-                    break;
-                case DbType.SqlServer:
-                    break;
-                case DbType.Sqlite:
-                    break;
-                case DbType.Oracle:
-                    break;
-                case DbType.PostgreSQL:
-                    break;
-                case DbType.Dm:
-                    break;
-                case DbType.Kdbndp:
-                    break;
-                case DbType.Oscar:
-                    break;
-                default:
-                    break;
-            }
-
-            return null;
+            return tableService.GetTableList(configID);
         }
     }
 }
