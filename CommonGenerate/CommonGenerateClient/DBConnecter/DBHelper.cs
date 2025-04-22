@@ -17,7 +17,7 @@ namespace DBConnecter
             });
         }
 
-        public IList<UserTabColumnOutDto> GetColumnInfo(string table, string configID)
+        public IList<UserTabColumnOutDto> GetColumnInfo(string table)
         {
             var fieldList = GetFieldInfoList(table);
             if (fieldList == null || fieldList.Count == 0)
@@ -46,11 +46,10 @@ namespace DBConnecter
         /// 根据表名获取表信息
         /// </summary>
         /// <param name="dataName"></param>
-        /// <param name="configID"></param>
         /// <returns></returns>
-        public UserTabCommentsOutDto GetTableByName(string dataName, string configID)
+        public UserTabCommentsOutDto GetTableByName(string dataName)
         {
-            var allTableList = GetTableList(configID);
+            var allTableList = GetTableList();
             if (allTableList == null || allTableList.Count == 0)
             {
                 return null;
@@ -67,7 +66,7 @@ namespace DBConnecter
             return null;
         }
 
-        public List<UserTabCommentsOutDto> GetTableList(string configID)
+        public List<UserTabCommentsOutDto> GetTableList()
         {
             var tableList = db.DbMaintenance.GetTableInfoList(false);
 
