@@ -130,29 +130,23 @@ namespace CommonGenerateClient.Win.ViewModel
                 return;
             }
             //获取数据库类型
-            try
-            {
-                var dbTypeValue = await HttpHelper.GetAsync<CommonDto<string>>(BaseURL + $"api/Data/GetDBType?configID={value.Value}", null, null, 10 * 1000);
-                DBType = dbTypeValue.Data;
-            }
-            catch (Exception)
-            {
-                DBType = "Oracle";
-            }
+            DBType = dbHelper.DBType.ToString();
 
-            var ret = await HttpHelper.GetAsync<CommonDto<List<TableModel>>>(BaseURL + $"api/Data/GetList?configID={value.Value}", null, null, 10 * 1000);
+            //获取数据库下的所有表
+            var rawTableList = dbHelper.GetTableList();
 
-            DataSourceList.Clear();
-
-            if (ret.Data.IsNullOrEmpty())
+            if (rawTableList == null || rawTableList.Count == 0)
             {
                 return;
             }
-            var sortTableList = ret.Data.OrderBy(f => f.TableName);
-            foreach (var item in sortTableList)
+
+            var tableList = new List<SelectTypeModel>();
+            foreach (var item in rawTableList)
             {
-                DataSourceList.Add(new SelectTypeModel { Value = item.TableType, Label = item.TableName, Name = item.Comments });
+                tableList.Add(new SelectTypeModel { Value = item.TableType, Label = item.TableName, Name = item.Comments });
             }
+
+            DataSourceList = new(tableList);
         }
 
         public MainViewModel()
@@ -271,12 +265,15 @@ namespace CommonGenerateClient.Win.ViewModel
         //打开的数据库
         private DBHelper dbHelper = new DBHelper(SqlSugar.DbType.PostgreSQL, "Host=192.168.2.49;Username=postgres;Password=mesadmin;Database=REPORT_WORK;");
 
+        /// <summary>
+        /// 加载数据库列表
+        /// </summary>
         private async void Load()
         {
             try
             {
                 //获取数据库列表
-                var rawTableList = dbHelper.GetTableList();
+                var rawTableList = DBConfigSingleton.Instance.DBConfig;
 
                 if (rawTableList == null || rawTableList.Count == 0)
                 {
@@ -286,14 +283,13 @@ namespace CommonGenerateClient.Win.ViewModel
                 var tableList = new List<SelectTypeModel>();
                 foreach (var item in rawTableList)
                 {
-                    tableList.Add(new SelectTypeModel { Value = item.TableName, Label = item.TableName, Name = item.TableName });
+                    tableList.Add(new SelectTypeModel { Value = item.ConfigID, Label = item.ConnectionString, Name = item.ConnectionString });
                 }
 
                 DBSourceList = new(tableList);
             }
             catch (Exception e)
             {
-                //MessageBox.Show(e.Message);
                 HandyControl.Controls.Growl.Error(e.Message);
             }
         }

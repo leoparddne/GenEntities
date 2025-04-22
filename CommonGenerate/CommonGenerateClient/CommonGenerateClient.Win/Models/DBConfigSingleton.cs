@@ -7,6 +7,7 @@ namespace CommonGenerateClient.Win.Models
 {
     public class DBConfigSingleton
     {
+        private static string ConfigFileName = "DBConfig.json";
         private static readonly object _lock = new object();
         private static DBConfigSingleton Ins { get; set; }
         private DBConfigSingleton()
@@ -35,7 +36,7 @@ namespace CommonGenerateClient.Win.Models
                             return Ins;
                         }
 
-                        var appsettingPath = AppDomain.CurrentDomain.BaseDirectory + "appsetting.json";
+                        var appsettingPath = AppDomain.CurrentDomain.BaseDirectory + ConfigFileName;
 
                         if (!File.Exists(appsettingPath))
                         {

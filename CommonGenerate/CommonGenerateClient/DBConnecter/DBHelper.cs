@@ -7,6 +7,7 @@ namespace DBConnecter
     public class DBHelper
     {
         SqlSugarClient db;
+        public DbType DBType { get; set; }
         public DBHelper(DbType dbType, string connectionString)
         {
             db = new SqlSugarClient(new ConnectionConfig()
