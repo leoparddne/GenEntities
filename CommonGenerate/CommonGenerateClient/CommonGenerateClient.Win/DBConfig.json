@@ -1,0 +1,14 @@
+﻿[
+  {
+    "ConfigID": "1",
+    "ConnectionString": "Host=192.168.2.49;Username=postgres;Password=mesadmin;Database=REPORT_WORK;",
+    "ConnectionType": "PostgreSQL",
+    "SqlAutoToLower": true
+  },
+  {
+    "ConfigID": "2",
+    "ConnectionString": "Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.2.49)(PORT = 1521)))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = MES_DEV)));User ID=mes;Password=mesadmin;",
+    "ConnectionType": "Oracle",
+    "SqlAutoToLower": true
+  }
+]

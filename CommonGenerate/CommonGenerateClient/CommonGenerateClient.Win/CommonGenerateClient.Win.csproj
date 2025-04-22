@@ -33,6 +33,9 @@
     <None Update="appsetting.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DBConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="DLLS\netstandard.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
