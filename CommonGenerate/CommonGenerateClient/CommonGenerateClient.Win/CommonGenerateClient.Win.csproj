@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="T4s\API\AutoService\**" />
+    <EmbeddedResource Remove="T4s\API\AutoService\**" />
+    <None Remove="T4s\API\AutoService\**" />
+    <Page Remove="T4s\API\AutoService\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="envdte" Version="17.7.37355" />
     <PackageReference Include="HandyControl" Version="3.4.0" />
     <PackageReference Include="Mono.TextTemplating" Version="2.3.1" />
@@ -25,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="DLLS\" />
-    <Folder Include="T4s\API\AutoService\" />
   </ItemGroup>
 
   <ItemGroup>

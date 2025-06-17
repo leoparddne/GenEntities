@@ -389,7 +389,7 @@ namespace <#= baseNamespaceName #>.<#= serviceNamespaceName #>
                 foreach (var column in dataConfig.Config.Columns)
                 {
                     string finalColumnName=CamelCaseUtility.Convert2Camel(column.ColumnName);
-                    if(ex.dbUtil.GetTypeByDBType(column.DataType) == "string")
+                    if(column.DataType.ToLower() == "string")
                     {
                         WriteLine(@$"condition = condition.AndIF(!string.IsNullOrEmpty(dto.{finalColumnName}), (f) => f.{finalColumnName}.Contains(dto.{finalColumnName}) );");
                     }

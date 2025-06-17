@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utility.Common;
-using Utility.DB.DBFieldTypeEx;
 using Utility.DB.ORM;
 
 namespace Utility.DB
 {
     public class GenerateEx
     {
-        public DBExBase dbUtil = null;
         ORMEx ormUtil = new ORMEx();
 
         public GenerateEx(string dbType)
         {
-            dbUtil = DBFieldFactory.Create(dbType);
         }
 
         /// <summary>
@@ -26,7 +23,7 @@ namespace Utility.DB
         /// <returns></returns>
         public string GenerateField(UserTabColumnOutDto column, bool generateNullableField = false)
         {
-            var fieldType = dbUtil.GetTypeByDBType(column.DataType);
+            var fieldType = column.DataType;
             var fieldName = CamelCaseUtility.Convert2Camel(column.ColumnName);
             return $"public {fieldType}{(generateNullableField ? "?" : "")} {fieldName} {{ get; set; }}";
         }
@@ -133,7 +130,7 @@ namespace Utility.DB
         {
             string fieldName = CamelCaseUtility.Convert2Camel(field.ColumnName);
 
-            if (dbUtil.GetTypeByDBType(field.DataType) == "string")
+            if (field.DataType.ToLower() == "string")
             {
                 return $@"!string.IsNullOrWhiteSpace({dtoName}.{fieldName})";
             }
@@ -144,7 +141,7 @@ namespace Utility.DB
         public string GetSearchDefaultConfition(UserTabColumnOutDto field, string dtoName)
         {
             string fieldName = CamelCaseUtility.Convert2Camel(field.ColumnName);
-            if (dbUtil.GetTypeByDBType(field.DataType) == "string")
+            if (field.DataType.ToLower() == "string")
             {
                 return $@"PartNo.Contains({dtoName}.{fieldName}))";
             }
@@ -168,7 +165,7 @@ namespace Utility.DB
                 }
 
                 string fieldInfo;
-                if (dbUtil.GetTypeByDBType(column.DataType) == "string")
+                if (column.DataType.ToLower() == "string")
                 {
                     fieldInfo = GenerateField(column, false);
                 }

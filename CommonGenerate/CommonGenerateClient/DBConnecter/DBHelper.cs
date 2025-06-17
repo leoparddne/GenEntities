@@ -1,6 +1,7 @@
 ﻿using CommonGenerateClient.Resource.Dto.Out;
 using SqlSugar;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DBConnecter
 {
@@ -101,7 +102,7 @@ namespace DBConnecter
                 }
             }
 
-            return result;
+            return result.OrderBy(x => x.TableName).ToList();
         }
 
         /// <summary>
